@@ -1,0 +1,444 @@
+openapi: 3.0.0
+info:
+    title: Gym Workout Tracker API
+    version: 1.0.0
+    description: API for managing gym workouts, exercise logs, and user progress.
+servers:
+    - url: http://localhost:3000/api
+      description: Local development server
+
+tags:
+    - name: Authentication
+      description: Endpoints related to user authentication and registration
+    - name: Users
+      description: Endpoints related to user profile management
+    - name: Workout Plans
+      description: Endpoints related to workout plans management
+    - name: Exercises
+      description: Endpoints related to exercises management
+    - name: Logs
+      description: Endpoints related to logging exercises
+
+paths:
+    /auth/register:
+        post:
+            tags:
+                - Authentication
+            operationId: registerUser
+            summary: Register a new user
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            $ref: "#/components/schemas/User"
+            responses:
+                "201":
+                    description: User created
+                    content:
+                        application/json:
+                            schema:
+                                $ref: "#/components/schemas/User"
+
+    /auth/login:
+        post:
+            tags:
+                - Authentication
+            operationId: loginUser
+            summary: Log in an existing user
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            type: object
+                            properties:
+                                username:
+                                    type: string
+                                password:
+                                    type: string
+            responses:
+                "200":
+                    description: Successful login
+                    content:
+                        application/json:
+                            schema:
+                                type: object
+                                properties:
+                                    token:
+                                        type: string
+
+    /users/me:
+        get:
+            tags:
+                - Users
+            operationId: getCurrentUserProfile
+            summary: Get the current user's profile
+            responses:
+                "200":
+                    description: User profile
+                    content:
+                        application/json:
+                            schema:
+                                $ref: "#/components/schemas/User"
+        put:
+            tags:
+                - Users
+            operationId: updateCurrentUserProfile
+            summary: Update the current user's profile
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            $ref: "#/components/schemas/User"
+            responses:
+                "200":
+                    description: User updated
+                    content:
+                        application/json:
+                            schema:
+                                $ref: "#/components/schemas/User"
+
+    /workout-plans:
+        get:
+            tags:
+                - Workout Plans
+            operationId: getAllWorkoutPlans
+            summary: Get all workout plans for the logged-in user
+            responses:
+                "200":
+                    description: List of workout plans
+                    content:
+                        application/json:
+                            schema:
+                                type: array
+                                items:
+                                    $ref: "#/components/schemas/WorkoutPlan"
+        post:
+            tags:
+                - Workout Plans
+            operationId: createWorkoutPlan
+            summary: Create a new workout plan
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            $ref: "#/components/schemas/WorkoutPlan"
+            responses:
+                "201":
+                    description: Workout plan created
+                    content:
+                        application/json:
+                            schema:
+                                $ref: "#/components/schemas/WorkoutPlan"
+
+    /workout-plans/{id}:
+        get:
+            tags:
+                - Workout Plans
+            operationId: getWorkoutPlanById
+            summary: Get a specific workout plan
+            parameters:
+                - name: id
+                  in: path
+                  required: true
+                  schema:
+                      type: string
+                      format: uuid
+            responses:
+                "200":
+                    description: Workout plan details
+                    content:
+                        application/json:
+                            schema:
+                                $ref: "#/components/schemas/WorkoutPlan"
+        put:
+            tags:
+                - Workout Plans
+            operationId: updateWorkoutPlanById
+            summary: Update a specific workout plan
+            parameters:
+                - name: id
+                  in: path
+                  required: true
+                  schema:
+                      type: string
+                      format: uuid
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            $ref: "#/components/schemas/WorkoutPlan"
+            responses:
+                "200":
+                    description: Workout plan updated
+                    content:
+                        application/json:
+                            schema:
+                                $ref: "#/components/schemas/WorkoutPlan"
+        delete:
+            tags:
+                - Workout Plans
+            operationId: deleteWorkoutPlanById
+            summary: Delete a specific workout plan
+            parameters:
+                - name: id
+                  in: path
+                  required: true
+                  schema:
+                      type: string
+                      format: uuid
+            responses:
+                "204":
+                    description: Workout plan deleted
+
+    /workout-plans/{planId}/exercises:
+        post:
+            tags:
+                - Exercises
+            operationId: addExerciseToWorkoutPlan
+            summary: Add an exercise to a workout plan
+            parameters:
+                - name: planId
+                  in: path
+                  required: true
+                  schema:
+                      type: string
+                      format: uuid
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            $ref: "#/components/schemas/Exercise"
+            responses:
+                "201":
+                    description: Exercise added
+                    content:
+                        application/json:
+                            schema:
+                                $ref: "#/components/schemas/Exercise"
+
+    /exercises/{id}:
+        put:
+            tags:
+                - Exercises
+            operationId: updateExerciseById
+            summary: Update a specific exercise
+            parameters:
+                - name: id
+                  in: path
+                  required: true
+                  schema:
+                      type: string
+                      format: uuid
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            $ref: "#/components/schemas/Exercise"
+            responses:
+                "200":
+                    description: Exercise updated
+                    content:
+                        application/json:
+                            schema:
+                                $ref: "#/components/schemas/Exercise"
+        delete:
+            tags:
+                - Exercises
+            operationId: deleteExerciseById
+            summary: Delete a specific exercise
+            parameters:
+                - name: id
+                  in: path
+                  required: true
+                  schema:
+                      type: string
+                      format: uuid
+            responses:
+                "204":
+                    description: Exercise deleted
+
+    /logs:
+        post:
+            tags:
+                - Logs
+            operationId: logExercise
+            summary: Log an exercise
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            $ref: "#/components/schemas/Log"
+            responses:
+                "201":
+                    description: Log created
+                    content:
+                        application/json:
+                            schema:
+                                $ref: "#/components/schemas/Log"
+        get:
+            tags:
+                - Logs
+            operationId: getAllLogs
+            summary: Get all logs for the logged-in user
+            responses:
+                "200":
+                    description: List of logs
+                    content:
+                        application/json:
+                            schema:
+                                type: array
+                                items:
+                                    $ref: "#/components/schemas/Log"
+
+    /logs/{id}:
+        get:
+            tags:
+                - Logs
+            operationId: getLogById
+            summary: Get a specific log
+            parameters:
+                - name: id
+                  in: path
+                  required: true
+                  schema:
+                      type: string
+                      format: uuid
+            responses:
+                "200":
+                    description: Log details
+                    content:
+                        application/json:
+                            schema:
+                                $ref: "#/components/schemas/Log"
+        put:
+            tags:
+                - Logs
+            operationId: updateLogById
+            summary: Update a specific log
+            parameters:
+                - name: id
+                  in: path
+                  required: true
+                  schema:
+                      type: string
+                      format: uuid
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            $ref: "#/components/schemas/Log"
+            responses:
+                "200":
+                    description: Log updated
+                    content:
+                        application/json:
+                            schema:
+                                $ref: "#/components/schemas/Log"
+        delete:
+            tags:
+                - Logs
+            operationId: deleteLogById
+            summary: Delete a specific log
+            parameters:
+                - name: id
+                  in: path
+                  required: true
+                  schema:
+                      type: string
+                      format: uuid
+            responses:
+                "204":
+                    description: Log deleted
+
+components:
+    schemas:
+        User:
+            type: object
+            properties:
+                id:
+                    type: string
+                    format: uuid
+                username:
+                    type: string
+                email:
+                    type: string
+                password:
+                    type: string
+
+        WorkoutPlan:
+            type: object
+            properties:
+                id:
+                    type: string
+                    format: uuid
+                userId:
+                    type: string
+                    format: uuid
+                name:
+                    type: string
+                createdAt:
+                    type: string
+                    format: date-time
+                updatedAt:
+                    type: string
+                    format: date-time
+
+        Exercise:
+            type: object
+            properties:
+                id:
+                    type: string
+                    format: uuid
+                workoutPlanId:
+                    type: string
+                    format: uuid
+                name:
+                    type: string
+                sets:
+                    type: integer
+                reps:
+                    type: integer
+                weight:
+                    type: number
+                    format: float
+                createdAt:
+                    type: string
+                    format: date-time
+                updatedAt:
+                    type: string
+                    format: date-time
+
+        Log:
+            type: object
+            properties:
+                id:
+                    type: string
+                    format: uuid
+                userId:
+                    type: string
+                    format: uuid
+                workoutPlanId:
+                    type: string
+                    format: uuid
+                exerciseId:
+                    type: string
+                    format: uuid
+                date:
+                    type: string
+                    format: date
+                sets:
+                    type: integer
+                reps:
+                    type: integer
+                weight:
+                    type: number
+                    format: float
+
+    securitySchemes:
+        bearerAuth:
+            type: http
+            scheme: bearer
+            bearerFormat: JWT
+
+security:
+    - bearerAuth: []
