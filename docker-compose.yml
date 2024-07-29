@@ -1,0 +1,18 @@
+version: '3.8'
+
+services:
+  reprecord-backend:
+    build:
+      context: ./Reprecord.Backend
+      dockerfile: Dockerfile
+    ports:
+      - "3000:3000" #local
+      - "3001:3001" #dev
+      - "3002:3002" #qas
+      - "3003:3003" #prd
+    environment:
+      NODE_ENV: "localdevelopment" 
+    volumes:
+      - ./Reprecord.Backend/src:/app/src
+      - /app/node_modules 
+    command: npm run start:docker
