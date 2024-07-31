@@ -6,6 +6,8 @@ info:
 servers:
     - url: http://localhost:3000/api
       description: Local development server
+    - url: http://localhost:3001/api
+      description: Local dev server
 
 tags:
     - name: Authentication
@@ -19,12 +21,16 @@ tags:
     - name: Logs
       description: Endpoints related to logging exercises
 
+# security:
+#     - bearerAuth: []
+
 paths:
     /auth/register:
         post:
             tags:
                 - Authentication
             operationId: registerUser
+            x-eov-operation-handler: controllers/AuthenticationController
             summary: Register a new user
             requestBody:
                 content:
@@ -44,6 +50,7 @@ paths:
             tags:
                 - Authentication
             operationId: loginUser
+            x-eov-operation-handler: controllers/AuthenticationController
             summary: Log in an existing user
             requestBody:
                 content:
@@ -71,6 +78,7 @@ paths:
             tags:
                 - Users
             operationId: getCurrentUserProfile
+            x-eov-operation-handler: controllers/UserController
             summary: Get the current user's profile
             responses:
                 "200":
@@ -83,6 +91,7 @@ paths:
             tags:
                 - Users
             operationId: updateCurrentUserProfile
+            x-eov-operation-handler: controllers/UserController
             summary: Update the current user's profile
             requestBody:
                 content:
@@ -102,6 +111,7 @@ paths:
             tags:
                 - Workout Plans
             operationId: getAllWorkoutPlans
+            x-eov-operation-handler: controllers/WorkoutPlanController
             summary: Get all workout plans for the logged-in user
             responses:
                 "200":
@@ -116,6 +126,7 @@ paths:
             tags:
                 - Workout Plans
             operationId: createWorkoutPlan
+            x-eov-operation-handler: controllers/WorkoutPlanController
             summary: Create a new workout plan
             requestBody:
                 content:
@@ -135,6 +146,7 @@ paths:
             tags:
                 - Workout Plans
             operationId: getWorkoutPlanById
+            x-eov-operation-handler: controllers/WorkoutPlanController
             summary: Get a specific workout plan
             parameters:
                 - name: id
@@ -154,6 +166,7 @@ paths:
             tags:
                 - Workout Plans
             operationId: updateWorkoutPlanById
+            x-eov-operation-handler: controllers/WorkoutPlanController
             summary: Update a specific workout plan
             parameters:
                 - name: id
@@ -178,6 +191,7 @@ paths:
             tags:
                 - Workout Plans
             operationId: deleteWorkoutPlanById
+            x-eov-operation-handler: controllers/WorkoutPlanController
             summary: Delete a specific workout plan
             parameters:
                 - name: id
@@ -195,6 +209,7 @@ paths:
             tags:
                 - Exercises
             operationId: addExerciseToWorkoutPlan
+            x-eov-operation-handler: controllers/ExerciseController
             summary: Add an exercise to a workout plan
             parameters:
                 - name: planId
@@ -221,6 +236,7 @@ paths:
             tags:
                 - Exercises
             operationId: updateExerciseById
+            x-eov-operation-handler: controllers/ExerciseController
             summary: Update a specific exercise
             parameters:
                 - name: id
@@ -245,6 +261,7 @@ paths:
             tags:
                 - Exercises
             operationId: deleteExerciseById
+            x-eov-operation-handler: controllers/ExerciseController
             summary: Delete a specific exercise
             parameters:
                 - name: id
@@ -262,6 +279,7 @@ paths:
             tags:
                 - Logs
             operationId: logExercise
+            x-eov-operation-handler: controllers/LogController
             summary: Log an exercise
             requestBody:
                 content:
@@ -279,6 +297,7 @@ paths:
             tags:
                 - Logs
             operationId: getAllLogs
+            x-eov-operation-handler: controllers/LogController
             summary: Get all logs for the logged-in user
             responses:
                 "200":
@@ -295,6 +314,7 @@ paths:
             tags:
                 - Logs
             operationId: getLogById
+            x-eov-operation-handler: controllers/LogController
             summary: Get a specific log
             parameters:
                 - name: id
@@ -314,6 +334,7 @@ paths:
             tags:
                 - Logs
             operationId: updateLogById
+            x-eov-operation-handler: controllers/LogController
             summary: Update a specific log
             parameters:
                 - name: id
@@ -338,6 +359,7 @@ paths:
             tags:
                 - Logs
             operationId: deleteLogById
+            x-eov-operation-handler: controllers/LogController
             summary: Delete a specific log
             parameters:
                 - name: id
@@ -439,6 +461,3 @@ components:
             type: http
             scheme: bearer
             bearerFormat: JWT
-
-security:
-    - bearerAuth: []
