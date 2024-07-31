@@ -25,12 +25,10 @@ fi
 # Clear out the target directories
 echo "Clearing out the target directories..."
 rm -rf "$MODEL_DIR"/*
-rm -rf "$API_DIR"/*
 
 # Copy the generated files into the target directories
-echo "Copying generated files to src/model and src/api..."
+echo "Copying generated files to src/model "
 cp -r model/* "$MODEL_DIR"/
-cp -r api/* "$API_DIR"/
 
 # Clean up the temporary directory
 popd > /dev/null || { echo "Failed to return to previous directory. Exiting."; exit 1; }
