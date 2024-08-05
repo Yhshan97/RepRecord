@@ -25,6 +25,9 @@ jobs:
                   aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
                   aws-region: us-east-2
 
+            - name: Change directory
+              run: terraform -chdir=./Reprecord.Backend
+
             - name: Initialize Terraform
               run: terraform init
 
