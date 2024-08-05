@@ -9,10 +9,6 @@ jobs:
   deploy:
     runs-on: ubuntu-latest
 
-    defaults:
-      run:
-        working-directory: ./Reprecord.Backend
-
     steps:
     - name: Checkout repository
       uses: actions/checkout@v2
@@ -31,9 +27,13 @@ jobs:
 
     - name: Initialize Terraform
       run: terraform init
+      working-directory: ./Reprecord.Backend
+
 
     - name: Apply Terraform
       env:
         TF_VAR_google_client_id: ${{ secrets.GOOGLE_CLIENT_ID }}
         TF_VAR_google_client_secret: ${{ secrets.GOOGLE_CLIENT_SECRET }}
       run: terraform apply -auto-approve
+      working-directory: ./Reprecord.Backend
+
