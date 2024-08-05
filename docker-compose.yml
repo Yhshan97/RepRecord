@@ -1,7 +1,7 @@
 version: '3.8'
 
 services:
-  reprecord-backend:
+  backend:
     build:
       context: ./Reprecord.Backend
       dockerfile: Dockerfile
