@@ -27,7 +27,7 @@ jobs:
 
     - name: Initialize Terraform
       run: terraform init
-      working-directory: ./Reprecord.Backend
+      working-directory: ./Reprecord.Backend/Terraform
 
 
     - name: Apply Terraform
@@ -35,5 +35,5 @@ jobs:
         TF_VAR_google_client_id: ${{ secrets.GOOGLE_CLIENT_ID }}
         TF_VAR_google_client_secret: ${{ secrets.GOOGLE_CLIENT_SECRET }}
       run: terraform apply -auto-approve
-      working-directory: ./Reprecord.Backend
+      working-directory: ./Reprecord.Backend/Terraform
 
