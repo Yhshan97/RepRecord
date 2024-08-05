@@ -25,9 +25,6 @@ jobs:
                   aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
                   aws-region: us-east-2
 
-            - name: Change directory
-              run: terraform -chdir=./Reprecord.Backend
-
             - name: Initialize Terraform
               run: terraform init
 
@@ -35,4 +32,4 @@ jobs:
               env:
                   TF_VAR_google_client_id: ${{ secrets.GOOGLE_CLIENT_ID }}
                   TF_VAR_google_client_secret: ${{ secrets.GOOGLE_CLIENT_SECRET }}
-              run: terraform apply -auto-approve
+              run: terraform -chdir=Reprecord.Backend apply -auto-approve
