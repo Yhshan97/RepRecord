@@ -1,6 +1,6 @@
 aws_region     = "us-east-2"
 user_pool_name = "reprecord-pool-QAS"
-domain_name    = "reprecordqas"
+domain_name    = "reprecordq"
 client_name    = "reprecord-client-qas"
 callback_url   = ""
 logout_url     = ""

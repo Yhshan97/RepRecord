@@ -1,4 +1,3 @@
-
 provider "aws" {
   region = "us-east-2"
 }
@@ -25,7 +24,7 @@ resource "aws_cognito_user_pool_client" "reprecord_client" {
   ]
 
   callback_urls = [var.callback_url]
-  logout_urls   = [var.callback_url]
+  logout_urls   = [var.logout_url]
 
   allowed_oauth_flows                  = ["code"]
   allowed_oauth_scopes                 = ["email", "openid", "profile"]
@@ -44,6 +43,7 @@ resource "aws_cognito_identity_provider" "google" {
   }
   attribute_mapping = {
     email = "email"
+    sub   = "sub"
   }
 }
 
