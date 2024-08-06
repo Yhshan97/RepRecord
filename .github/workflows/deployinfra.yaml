@@ -9,6 +9,10 @@ jobs:
   deploy:
     runs-on: ubuntu-latest
 
+    strategy:
+      matrix:
+        environment: [dev] #, qas, prd]
+
     steps:
     - name: Checkout repository
       uses: actions/checkout@v2
@@ -34,6 +38,6 @@ jobs:
       env:
         TF_VAR_google_client_id: ${{ secrets.GOOGLE_CLIENT_ID }}
         TF_VAR_google_client_secret: ${{ secrets.GOOGLE_CLIENT_SECRET }}
-      run: terraform apply -auto-approve
+      run: terraform apply -auto-approve -var-file=var/${{ matrix.environment }}.tfvars
       working-directory: ./Reprecord.Backend/Terraform
 
