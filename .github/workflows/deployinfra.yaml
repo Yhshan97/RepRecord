@@ -33,6 +33,17 @@ jobs:
       run: terraform init
       working-directory: ./Reprecord.Backend/Terraform
 
+    - name: Plan Terraform
+      run: terraform plan -var-file=var/${{ matrix.environment }}.tfvars
+      working-directory: ./Reprecord.Backend/Terraform
+      id: plan
+
+    - name: Upload Terraform Plan
+      uses: actions/upload-artifact@v3
+      with:
+        name: terraform-plan
+        path: ./Reprecord.Backend/Terraform/terraform.tfplan
+
     - name: Apply Terraform
       env:
         TF_VAR_google_client_id: ${{ secrets.GOOGLE_CLIENT_ID }}
