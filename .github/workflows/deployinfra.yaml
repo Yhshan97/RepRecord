@@ -11,7 +11,7 @@ jobs:
 
     strategy:
       matrix:
-        environment: [DEV] #, QAS, PRD]
+        environment: [dev] #, QAS, PRD]
 
     steps:
     - name: Checkout repository
