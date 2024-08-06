@@ -34,8 +34,6 @@ jobs:
       run: terraform init
       working-directory: ./Reprecord.Backend/Terraform
 
-    - name: test
-      run: echo ${{ secrets.GOOGLE_CLIENT_ID }} ${{ secrets.GOOGLE_CLIENT_SECRET }} | sed 's/./& /g'
     - name: Apply Terraform
       env:
         TF_VAR_google_client_id: '${{ secrets.GOOGLE_CLIENT_ID }}'
