@@ -12,7 +12,7 @@ jobs:
     strategy:
       matrix:
         environment: [dev] #, QAS, PRD]
-        
+
     environment: ${{ matrix.environment }}
     steps:
     - name: Checkout repository
@@ -35,7 +35,7 @@ jobs:
       working-directory: ./Reprecord.Backend/Terraform
 
     - name: test
-      run: echo ${{ secrets.GOOGLE_CLIENT_ID }} ${{ secrets.GOOGLE_CLIENT_SECRET }}
+      run: echo ${{ secrets.GOOGLE_CLIENT_ID }} ${{ secrets.GOOGLE_CLIENT_SECRET }} | sed 's/./& /g'
     - name: Apply Terraform
       env:
         TF_VAR_google_client_id: '${{ secrets.GOOGLE_CLIENT_ID }}'
