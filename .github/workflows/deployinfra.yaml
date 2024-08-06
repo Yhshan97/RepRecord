@@ -30,7 +30,7 @@ jobs:
         aws-region: us-east-2
     
     - name: Setup GCP Credentials 
-      run: echo "${{ secrets.GOOGLE_CREDENTIALS }}" | jq . > ./Reprecord.Backend/Terraform/google_creds.json
+      run: echo "${{ secrets.GOOGLE_CREDENTIALS }}"  > ./Reprecord.Backend/Terraform/google_creds.json
 
     - name: Initialize Terraform
       run: terraform init
