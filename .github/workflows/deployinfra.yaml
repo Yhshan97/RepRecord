@@ -30,12 +30,11 @@ jobs:
         aws-region: us-east-2
     
     - name: Setup GCP Credentials 
-      run: echo "${{ secrets.GOOGLE_CREDENTIALS }}" > /tmp/google_creds.json
+      run: echo "${{ secrets.GOOGLE_CREDENTIALS }}" | jq . > ./Reprecord.Backend/Terraform/google_creds.json
 
     - name: Initialize Terraform
       run: terraform init
       working-directory: ./Reprecord.Backend/Terraform
-
 
     - name: Apply Terraform
       env:
@@ -44,3 +43,5 @@ jobs:
       run: terraform apply -auto-approve -var-file=var/${{ matrix.environment }}.tfvars
       working-directory: ./Reprecord.Backend/Terraform
 
+    - name: Cleanup GCP Credentials
+      run: rm ./reprecord.backend/Terraform/google_creds.json

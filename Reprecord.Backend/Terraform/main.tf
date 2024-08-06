@@ -1,5 +1,5 @@
 provider "google" {
-  credentials = file("/tmp/google_creds.json")
+  credentials = file("google_creds.json")
   project     = var.google_project_id
 }
 
