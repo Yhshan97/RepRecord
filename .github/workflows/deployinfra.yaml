@@ -29,12 +29,6 @@ jobs:
         aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
         aws-region: us-east-2
     
-    - name: Setup and decode GCP Credentials 
-      run: echo "${{ secrets.GOOGLE_CREDENTIALS }}" | base64 -d > ./Reprecord.Backend/Terraform/google_creds.json
-
-    - name: test
-      run: cat ./Reprecord.Backend/Terraform/google_creds.json
-
     - name: Initialize Terraform
       run: terraform init
       working-directory: ./Reprecord.Backend/Terraform
@@ -45,6 +39,3 @@ jobs:
         TF_VAR_google_client_secret: ${{ secrets.GOOGLE_CLIENT_SECRET }}
       run: terraform apply -auto-approve -var-file=var/${{ matrix.environment }}.tfvars
       working-directory: ./Reprecord.Backend/Terraform
-
-    - name: Cleanup GCP Credentials
-      run: rm ./reprecord.backend/Terraform/google_creds.json

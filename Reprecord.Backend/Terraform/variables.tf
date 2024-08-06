@@ -29,8 +29,3 @@ variable "callback_url" {
 variable "logout_url" {
   description = "Cognito logout URL"
 }
-
-variable "google_project_id" {
-  description = "Google project ID"
-  default     = "reprecord-gcp"
-}

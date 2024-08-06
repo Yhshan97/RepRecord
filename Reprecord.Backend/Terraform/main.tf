@@ -1,22 +1,3 @@
-provider "google" {
-  credentials = file("google_creds.json")
-  project     = var.google_project_id
-}
-
-resource "google_project_service" "iam" {
-  project = var.google_project_id
-  service = "iam.googleapis.com"
-}
-
-resource "google_oauth_client" "oauth2" {
-  display_name = var.client_name
-  project      = var.google_project_id
-
-  oauth2_client_id     = var.google_client_id
-  oauth2_client_secret = var.google_client_secret
-}
-
-
 provider "aws" {
   region = "us-east-2"
 }
