@@ -1,10 +1,6 @@
-
-
-module "naming" {
-  aws_region     = ""
-  user_pool_name = ""
-  domain_name    = ""
-  client_name    = ""
-  callback_url   = ""
-  logout_url     = ""
-}
+aws_region     = "us-east-2"
+user_pool_name = "reprecord-pool-QAS"
+domain_name    = "reprecordqas"
+client_name    = "reprecord-client-qas"
+callback_url   = ""
+logout_url     = ""
