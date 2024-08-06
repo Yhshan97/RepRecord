@@ -34,9 +34,12 @@ jobs:
       working-directory: ./Reprecord.Backend/Terraform
 
     - name: Plan Terraform
+      env:
+        TF_VAR_google_client_id: ${{ secrets.GOOGLE_CLIENT_ID }}
+        TF_VAR_google_client_secret: ${{ secrets.GOOGLE_CLIENT_SECRET }}
       run: terraform plan -var-file=var/${{ matrix.environment }}.tfvars
       working-directory: ./Reprecord.Backend/Terraform
-      id: plan
+      id: terraform-plan
 
     - name: Upload Terraform Plan
       uses: actions/upload-artifact@v3
