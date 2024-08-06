@@ -1,35 +1,31 @@
-variable "google_client_id" {}
-variable "google_client_secret" {}
 
 provider "aws" {
   region = "us-east-2"
 }
 
 resource "aws_cognito_user_pool" "reprecord_pool" {
-  name = module.naming.user_pool_name
-
-  password_policy {
-    minimum_length    = 8
-    require_lowercase = true
-    require_numbers   = true
-    require_uppercase = true
-  }
+  name = var.user_pool_name
 }
 
 resource "aws_cognito_user_pool_domain" "up_domain" {
-  domain       = module.naming.domain_name
+  domain       = var.domain_name
   user_pool_id = aws_cognito_user_pool.reprecord_pool.id
 }
 
 resource "aws_cognito_user_pool_client" "reprecord_client" {
-  name            = module.naming.client_name
+  name            = var.client_name
   user_pool_id    = aws_cognito_user_pool.reprecord_pool.id
   generate_secret = false
 
-  explicit_auth_flows = ["ALLOW_REFRESH_TOKEN_AUTH", "ALLOW_USER_SRP_AUTH", "ALLOW_CUSTOM_AUTH", "ALLOW_USER_PASSWORD_AUTH"]
+  explicit_auth_flows = [
+    "ALLOW_REFRESH_TOKEN_AUTH",
+    "ALLOW_USER_SRP_AUTH",
+    "ALLOW_CUSTOM_AUTH",
+    "ALLOW_USER_PASSWORD_AUTH"
+  ]
 
-  callback_urls = [module.naming.callback_url]
-  logout_urls   = [module.naming.callback_url]
+  callback_urls = [var.callback_url]
+  logout_urls   = [var.callback_url]
 
   allowed_oauth_flows                  = ["code"]
   allowed_oauth_scopes                 = ["email", "openid", "profile"]
