@@ -1,13 +1,3 @@
-terraform {
-  backend "remote" {
-    organization = "Personal-yhshan"
-
-    workspaces {
-      name = "reprecord-${var.environment}"
-    }
-  }
-}
-
 provider "aws" {
   region = "us-east-2"
 }
