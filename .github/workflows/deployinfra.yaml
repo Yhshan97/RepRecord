@@ -32,10 +32,11 @@ jobs:
         aws-region: us-east-2
     
     - name: Initialize Terraform
-      run: terraform init \
-            -backend-config="hostname=app.terraform.io" \
-            -backend-config="organization=Personal-yhshan" \
-            -backend-config="workspaces{name=reprecord-${{ matrix.environment }}}"
+      run: |
+        terraform init \
+          -backend-config="hostname=app.terraform.io" \
+          -backend-config="organization=Personal-yhshan" \
+          -backend-config="workspaces.name=reprecord-${{ matrix.environment }}"
       working-directory: ./Reprecord.Backend/Terraform
 
     - name: Configure Terraform Cloud Credentials
