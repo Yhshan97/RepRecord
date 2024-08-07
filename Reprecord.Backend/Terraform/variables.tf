@@ -29,3 +29,7 @@ variable "callback_url" {
 variable "logout_url" {
   description = "Cognito logout URL"
 }
+
+variable "environment" {
+  description = "Environment (dev, qas, prd)"
+}

@@ -34,32 +34,15 @@ jobs:
       run: terraform init
       working-directory: ./Reprecord.Backend/Terraform
 
-    - name: Show Terraform State
-      run: terraform state list
-      working-directory: ./Reprecord.Backend/Terraform
-    - name: Show Resource State
-      run: terraform state show aws_cognito_user_pool.reprecord_pool
-      working-directory: ./Reprecord.Backend/Terraform
-    - name: Refresh Terraform State
-      run: terraform refresh
-      working-directory: ./Reprecord.Backend/Terraform
-    - name: Set Terraform Debug Logging
-      run: echo "TF_LOG=DEBUG" >> $GITHUB_ENV
-
-    - name: Terraform Plan
-      id: plan
-      run: terraform plan -var-file=var/${{ matrix.environment }}.tfvars
-      working-directory: ./Reprecord.Backend/Terraform
-
-    - name: Upload Terraform Plan as Artifact
-      uses: actions/upload-artifact@v2
-      with:
-        name: terraform-plan
-        path: ./Reprecord.Backend/Terraform/terraform.tfplan
+    - name: Configure Terraform Cloud Credentials
+      env:
+        TFE_TOKEN: ${{ secrets.TF_CLOUD_TOKEN }}
+      run: terraform login
 
     - name: Apply Terraform
       env:
         TF_VAR_google_client_id: '${{ secrets.GOOGLE_CLIENT_ID }}'
         TF_VAR_google_client_secret: '${{ secrets.GOOGLE_CLIENT_SECRET }}'
+        TF_VAR_environment: ${{ matrix.environment }}
       run: terraform apply -auto-approve -var-file=var/${{ matrix.environment }}.tfvars
       working-directory: ./Reprecord.Backend/Terraform
