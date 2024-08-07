@@ -31,22 +31,9 @@ jobs:
         aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
         aws-region: us-east-2
 
-    - name: Configure TF Cloud Credentials
-      env:
-        TFE_TOKEN: ${{ secrets.TF_CLOUD_TOKEN }}
-      run: |
-        mkdir -p ~/.terraform.d
-        echo '{"credentials": {"app.terraform.io": {"token": "'${{ secrets.TF_CLOUD_TOKEN }}'"}}}' > ~/.terraform.d/credentials.tfrc.json
-
-    
     - name: Initialize Terraform
       run: terraform init -backend-config="key=${{ matrix.environment }}/terraform.tfstate" 
       working-directory: ./Reprecord.Backend/Terraform
-
-    - name: Configure Terraform Cloud Credentials
-      env:
-        TFE_TOKEN: ${{ secrets.TF_CLOUD_TOKEN }}
-      run: terraform login
 
     - name: Apply Terraform
       env:
