@@ -1,5 +1,9 @@
 terraform {
-  backend "remote" {}
+  backend "s3" {
+    bucket         = "repecord-terraform-bucket"
+    region         = "us-east-2"
+    dynamodb_table = "terraform-locks"
+  }
 }
 
 provider "aws" {
