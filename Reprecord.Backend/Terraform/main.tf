@@ -1,8 +1,8 @@
 terraform {
   backend "s3" {
-    bucket         = "repecord-terraform-bucket"
     region         = "us-east-2"
-    dynamodb_table = "terraform-locks"
+    bucket         = "reprecord-terraform-bucket"
+    dynamodb_table = "reprecord-terraform-locks"
   }
 }
 
