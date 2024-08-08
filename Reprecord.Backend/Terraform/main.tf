@@ -1,3 +1,11 @@
+terraform {
+  backend "s3" {
+    region         = "us-east-2"
+    bucket         = "reprecord-terraform-bucket"
+    dynamodb_table = "reprecord-terraform-locks"
+  }
+}
+
 provider "aws" {
   region = "us-east-2"
 }
@@ -43,7 +51,6 @@ resource "aws_cognito_identity_provider" "google" {
   }
   attribute_mapping = {
     email = "email"
-    sub   = "sub"
   }
 }
 
