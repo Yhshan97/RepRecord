@@ -51,7 +51,6 @@ resource "aws_cognito_identity_provider" "google" {
   }
   attribute_mapping = {
     email = "email"
-    sub   = "sub"
   }
 }
 
