@@ -1,4 +1,3 @@
-aws_region     = "us-east-2"
 user_pool_name = "reprecord-pool-DEV"
 domain_name    = "reprecordd"
 client_name    = "reprecord-client-dev"

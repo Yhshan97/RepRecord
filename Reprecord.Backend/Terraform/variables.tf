@@ -6,10 +6,6 @@ variable "google_client_secret" {
   description = "Google app client secret"
 }
 
-variable "aws_region" {
-  description = "AWS region"
-}
-
 variable "user_pool_name" {
   description = "Cognito User Pool name"
 }

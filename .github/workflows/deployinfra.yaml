@@ -12,7 +12,7 @@ jobs:
 
     strategy:
       matrix:
-        environment: [dev] #, QAS, PRD]
+        environment: [dev, qas] #, PRD]
 
     environment: ${{ matrix.environment }}
     steps:

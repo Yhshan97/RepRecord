@@ -1,6 +1,5 @@
-aws_region     = "us-east-2"
 user_pool_name = "reprecord-pool-QAS"
 domain_name    = "reprecordq"
 client_name    = "reprecord-client-qas"
-callback_url   = ""
-logout_url     = ""
+callback_url   = "https://localhost:3000/logged_in"
+logout_url     = "https://localhost:3000/logged_out"
