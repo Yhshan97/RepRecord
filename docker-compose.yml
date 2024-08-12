@@ -1,18 +1,34 @@
-version: '3.8'
+version: "3.8"
 
 services:
   backend:
     build:
       context: ./Reprecord.Backend
       dockerfile: Dockerfile
+    depends_on:
+      - dynamodb-local
+    networks:
+      - local-dynamodb
     ports:
-      - "3000:3000" #local
-      - "3001:3001" #dev
-      - "3002:3002" #qas
-      - "3003:3003" #prd
+      - "3000-3003:3000-3003"
     environment:
-      NODE_ENV: "localdevelopment" 
+      NODE_ENV: "localdevelopment"
     volumes:
-      - ./Reprecord.Backend/src:/app/src
-      - /app/node_modules 
+      - ./Reprecord.Backend:/app
+      - /app/node_modules
     command: npm run start:docker
+
+  dynamodb-local:
+    image: amazon/dynamodb-local:latest
+    networks:
+      - local-dynamodb
+    ports:
+      - "8000:8000"
+    environment:
+      - JAVA_OPTS=-Xms512m -Xmx1g
+    volumes:
+      - ./dynamodb-data:/home/dynamodblocal/data
+    command: "-jar DynamoDBLocal.jar -sharedDb -dbPath /home/dynamodblocal/data"
+
+networks:
+  local-dynamodb:
