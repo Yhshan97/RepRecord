@@ -27,7 +27,7 @@ services:
     environment:
       - JAVA_OPTS=-Xms512m -Xmx1g
     volumes:
-      - ./dynamodb-data:/home/dynamodblocal/data
+      - ./Reprecord.Backend/dynamodb-data:/home/dynamodblocal/data
     command: "-jar DynamoDBLocal.jar -sharedDb -dbPath /home/dynamodblocal/data"
 
 networks:
