@@ -34,7 +34,7 @@ resource "aws_cognito_user_pool_client" "reprecord_client" {
   callback_urls = [var.callback_url]
   logout_urls   = [var.logout_url]
 
-  allowed_oauth_flows                  = ["code"]
+  allowed_oauth_flows                  = ["implicit"]
   allowed_oauth_scopes                 = ["email", "openid", "profile"]
   allowed_oauth_flows_user_pool_client = true
   supported_identity_providers         = ["Google"]
