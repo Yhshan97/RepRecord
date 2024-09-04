@@ -1,15 +1,16 @@
-import config from "config";
-import cors from "cors";
 import * as dotenv from "dotenv";
-import express from "express";
 import * as path from "path";
-import * as OpenApiValidator from "express-openapi-validator";
-import { swaggerUi, swaggerDocument } from "./middleware/swagger";
-
 // Load the .env file
 const env = process.env.NODE_ENV || "localdevelopment";
 const envPath = path.resolve(__dirname, `../env/.env.${env}`);
 dotenv.config({ path: envPath });
+
+import config from "config";
+import cors from "cors";
+import express from "express";
+import * as OpenApiValidator from "express-openapi-validator";
+import { swaggerUi, swaggerDocument } from "./middleware/swagger";
+import { authenticateToken } from "./middleware/auth";
 
 const app = express();
 const port = config.get<number>("app.port");
@@ -31,6 +32,9 @@ if (process.env.NODE_ENV === "development" || process.env.NODE_ENV === "localdev
 
 	// Swagger documentation route
 	app.use("/swagger", swaggerUi.serve, swaggerUi.setup(swaggerDocument));
+} else {
+	// Authenticate token for all routes
+	app.use(authenticateToken);
 }
 
 app.use(
