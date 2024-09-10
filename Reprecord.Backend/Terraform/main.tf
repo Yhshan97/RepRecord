@@ -30,9 +30,11 @@ resource "aws_cognito_user_pool_client" "reprecord_client" {
     "ALLOW_CUSTOM_AUTH",
     "ALLOW_USER_PASSWORD_AUTH"
   ]
-  id_token_validity = 24 # hours  
-  refresh_token_validity = 30 # days
   
+  id_token_validity = 24 # hours  
+  access_token_validity = 24 # hours
+  refresh_token_validity = 30 # days
+
   callback_urls = [var.callback_url]
   logout_urls   = [var.logout_url]
 
