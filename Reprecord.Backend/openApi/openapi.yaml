@@ -3,6 +3,7 @@ info:
     title: Gym Workout Tracker API
     version: 1.0.0
     description: API for managing gym workouts, exercise logs, and user progress.
+
 servers:
     - url: http://localhost:3000/api
       description: Local development server
@@ -21,57 +22,70 @@ tags:
     - name: Logs
       description: Endpoints related to logging exercises
 
-# security:
-#     - bearerAuth: []
-
 paths:
-    /auth/register:
-        post:
+    /auth/callback:
+        get:
             tags:
                 - Authentication
-            operationId: registerUser
+            summary: Exchange authorization code for access, ID, and refresh tokens
+            operationId: callback
             x-eov-operation-handler: controllers/AuthenticationController
-            summary: Register a new user
-            requestBody:
-                content:
-                    application/json:
-                        schema:
-                            $ref: "#/components/schemas/User"
+            parameters:
+                - name: code
+                  in: query
+                  required: true
+                  schema:
+                      type: string
             responses:
-                "201":
-                    description: User created
+                "200":
+                    description: Tokens exchanged successfully
                     content:
                         application/json:
                             schema:
-                                $ref: "#/components/schemas/User"
+                                type: object
+                                properties:
+                                    accessToken:
+                                        type: string
+                                    idToken:
+                                        type: string
+                                    refreshToken:
+                                        type: string
+                "400":
+                    description: Invalid authorization code
 
-    /auth/login:
+    /auth/refresh:
         post:
             tags:
                 - Authentication
-            operationId: loginUser
+            summary: Use a refresh token to get a new access token
+            operationId: refresh
             x-eov-operation-handler: controllers/AuthenticationController
-            summary: Log in an existing user
             requestBody:
                 content:
                     application/json:
                         schema:
                             type: object
                             properties:
-                                username:
+                                refreshToken:
                                     type: string
-                                password:
-                                    type: string
+                                    description: The refresh token
+                                    example: "example-refresh-token"
             responses:
                 "200":
-                    description: Successful login
+                    description: New access token generated
                     content:
                         application/json:
                             schema:
                                 type: object
                                 properties:
-                                    token:
+                                    accessToken:
                                         type: string
+                                    idToken:
+                                        type: string
+                "400":
+                    description: Invalid refresh token
+                "401":
+                    description: Unauthorized
 
     /users/me:
         get:
@@ -380,13 +394,11 @@ components:
                 id:
                     type: string
                     format: uuid
-                username:
-                    type: string
                 email:
                     type: string
-                password:
+                    format: email
+                name:
                     type: string
-
         WorkoutPlan:
             type: object
             properties:
@@ -397,6 +409,8 @@ components:
                     type: string
                     format: uuid
                 name:
+                    type: string
+                description:
                     type: string
                 createdAt:
                     type: string

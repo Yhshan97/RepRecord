@@ -1,19 +1,23 @@
 import { Request, Response, NextFunction } from "express";
+import { exchangeAuthCode, getNewAccessToken } from "../utils/cognitoUtils";
 
-export const registerUser = async (req: Request, res: Response, next: NextFunction) => {
+export const callback = async (req: Request, res: Response, next: NextFunction) => {
 	try {
-		const user = req.body;
-		res.status(201).json(user);
+		const { code } = req.query;
+
+		const tokens = await exchangeAuthCode(code?.toString() || "");
+		res.status(200).json(tokens);
 	} catch (err) {
 		next(err);
 	}
 };
 
-export const loginUser = async (req: Request, res: Response, next: NextFunction) => {
+export const refresh = async (req: Request, res: Response, next: NextFunction) => {
 	try {
-		const { username, password } = req.body;
-		const token = "token goes here";
-		res.status(200).json({ token });
+		const { refreshToken } = req.body;
+
+		const newTokens = await getNewAccessToken(refreshToken);
+		res.status(200).json(newTokens);
 	} catch (err) {
 		next(err);
 	}
