@@ -1,45 +1,57 @@
 #!/bin/bash
 
 ENDPOINT_URL="http://localhost:8000"
+export AWS_PAGER=""
 
-# Setting AWS_PAGER="" to silently create tables
+# Confirmation prompt
+read -p "Do you want to delete existing tables and recreate them? (y/n): " confirm
+if [ "$confirm" != "y" ]; then
+    echo "Skipping table deletion."
+else
+    echo "Deleting and recreating tables..."
 
-# Workouts Table
-AWS_PAGER="" aws dynamodb create-table \
-    --table-name Workouts \
+    aws dynamodb delete-table --table-name WorkoutPlans --endpoint-url $ENDPOINT_URL --output table
+    aws dynamodb delete-table --table-name Exercises --endpoint-url $ENDPOINT_URL --output table
+    aws dynamodb delete-table --table-name Logs --endpoint-url $ENDPOINT_URL --output table
+fi
+
+aws dynamodb create-table \
+    --table-name WorkoutPlans \
     --attribute-definitions \
-        AttributeName=WorkoutID,AttributeType=S \
-        AttributeName=UserID,AttributeType=S \
+        AttributeName=userID,AttributeType=S \
+        AttributeName=workoutID,AttributeType=S \
     --key-schema \
-        AttributeName=WorkoutID,KeyType=HASH \
-        AttributeName=UserID,KeyType=RANGE \
+        AttributeName=userID,KeyType=HASH \
+        AttributeName=workoutID,KeyType=RANGE \
     --provisioned-throughput \
         ReadCapacityUnits=5,WriteCapacityUnits=5 \
-    --no-paginate \
+    --output table \
     --endpoint-url $ENDPOINT_URL
 
-# Exercises Table
-AWS_PAGER="" aws dynamodb create-table \
+aws dynamodb create-table \
     --table-name Exercises \
     --attribute-definitions \
-        AttributeName=ExerciseID,AttributeType=S \
+        AttributeName=workoutID,AttributeType=S \
+        AttributeName=exerciseID,AttributeType=S \
     --key-schema \
-        AttributeName=ExerciseID,KeyType=HASH \
+        AttributeName=workoutID,KeyType=HASH \
+        AttributeName=exerciseID,KeyType=RANGE \
     --provisioned-throughput \
         ReadCapacityUnits=5,WriteCapacityUnits=5 \
-    --no-paginate \
+    --output table \
     --endpoint-url $ENDPOINT_URL
 
-# Logs Table
-AWS_PAGER="" aws dynamodb create-table \
+aws dynamodb create-table \
     --table-name Logs \
     --attribute-definitions \
-        AttributeName=LogID,AttributeType=S \
-        AttributeName=UserID,AttributeType=S \
+        AttributeName=exerciseID,AttributeType=S \
+        AttributeName=logID,AttributeType=S \
     --key-schema \
-        AttributeName=LogID,KeyType=HASH \
-        AttributeName=UserID,KeyType=RANGE \
+        AttributeName=exerciseID,KeyType=HASH \
+        AttributeName=logID,KeyType=RANGE \
     --provisioned-throughput \
         ReadCapacityUnits=5,WriteCapacityUnits=5 \
-    --no-paginate \
+    --output table \
     --endpoint-url $ENDPOINT_URL
+
+echo "Tables created."

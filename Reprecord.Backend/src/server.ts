@@ -33,9 +33,15 @@ if (process.env.NODE_ENV === "development" || process.env.NODE_ENV === "localdev
 	// Swagger documentation route
 	app.use("/swagger", swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 } else {
-	// Authenticate token for all routes
-	app.use(authenticateToken);
 }
+
+// Authenticate token for all other routes
+app.use((req, res, next) => {
+	if (req.path.startsWith("/api/auth/")) {
+		return next(); // Bypass authentication for these routes
+	}
+	authenticateToken(req, res, next);
+});
 
 app.use(
 	OpenApiValidator.middleware({

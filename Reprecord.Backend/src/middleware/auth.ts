@@ -16,7 +16,7 @@ export const authenticateToken = async (req: Request, res: Response, next: NextF
 
 		const payload = await jwtVerifier.verify(token);
 
-		req.userId = payload.sub;
+		req.userID = payload.sub;
 		req.userName = payload.username;
 
 		next();

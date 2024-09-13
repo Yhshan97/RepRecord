@@ -10,6 +10,8 @@ servers:
     - url: http://localhost:3001/api
       description: Local dev server
 
+security:
+    - bearerAuth: []
 tags:
     - name: Authentication
       description: Endpoints related to user authentication and registration
@@ -29,6 +31,7 @@ paths:
                 - Authentication
             summary: Exchange authorization code for access, ID, and refresh tokens
             operationId: callback
+            security: []
             x-eov-operation-handler: controllers/AuthenticationController
             parameters:
                 - name: code
@@ -59,6 +62,7 @@ paths:
                 - Authentication
             summary: Use a refresh token to get a new access token
             operationId: refresh
+            security: []
             x-eov-operation-handler: controllers/AuthenticationController
             requestBody:
                 content:
@@ -394,9 +398,6 @@ components:
                 id:
                     type: string
                     format: uuid
-                email:
-                    type: string
-                    format: email
                 name:
                     type: string
         WorkoutPlan:
@@ -405,9 +406,11 @@ components:
                 id:
                     type: string
                     format: uuid
+                    readOnly: true
                 userId:
                     type: string
                     format: uuid
+                    readOnly: true
                 name:
                     type: string
                 description:
@@ -415,9 +418,11 @@ components:
                 createdAt:
                     type: string
                     format: date-time
+                    readOnly: true
                 updatedAt:
                     type: string
                     format: date-time
+                    readOnly: true
 
         Exercise:
             type: object
