@@ -2,7 +2,7 @@ import { Request, Response, NextFunction } from "express";
 
 export const getCurrentUserProfile = async (req: Request, res: Response, next: NextFunction) => {
 	try {
-		const user = { id: "1", username: "test", email: "test@example.com" };
+		const user = { id: req.userID, name: req.userName };
 		res.status(200).json(user);
 	} catch (err) {
 		next(err);
@@ -12,6 +12,7 @@ export const getCurrentUserProfile = async (req: Request, res: Response, next: N
 export const updateCurrentUserProfile = async (req: Request, res: Response, next: NextFunction) => {
 	try {
 		const updatedUser = req.body;
+		// To be implemented
 		res.status(200).json(updatedUser);
 	} catch (err) {
 		next(err);
