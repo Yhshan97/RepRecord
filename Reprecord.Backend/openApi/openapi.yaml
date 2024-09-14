@@ -180,6 +180,12 @@ paths:
                         application/json:
                             schema:
                                 $ref: "#/components/schemas/WorkoutPlan"
+                "404":
+                    description: Workout plan not found
+                    content:
+                        application/json:
+                            schema:
+                                $ref: "#/components/schemas/Error"
         put:
             tags:
                 - Workout Plans
@@ -474,6 +480,13 @@ components:
                 weight:
                     type: number
                     format: float
+        Error:
+            type: object
+            properties:
+                statusCode:
+                    type: integer
+                message:
+                    type: string
 
     securitySchemes:
         bearerAuth:

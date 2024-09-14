@@ -58,7 +58,8 @@ app.use((err: Error, _req: express.Request, res: express.Response, _next: expres
 	res.status((err as any).status || 500).send(err.message);
 });
 
-// Start the server
-app.listen(port, () => {
+const server = app.listen(port, () => {
 	console.log(`Server running at http://localhost:${port}`);
 });
+
+export { app, server };
