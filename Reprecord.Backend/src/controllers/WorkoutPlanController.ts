@@ -87,6 +87,7 @@ export const updateWorkoutPlanById = async (req: Request, res: Response, next: N
 			TableName,
 			Key: { workoutID: req.params.id, userID: req.userID },
 			UpdateExpression: "set #name = :name, #description = :description, #updatedAt = :updatedAt",
+			ConditionExpression: "attribute_exists(workoutID)", // Item exists or throw
 			ExpressionAttributeNames: {
 				"#name": "name",
 				"#description": "description",
