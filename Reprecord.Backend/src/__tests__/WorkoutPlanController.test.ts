@@ -31,13 +31,13 @@ describe("WorkoutPlans Controller", () => {
 	describe("GET /workoutPlans", () => {
 		it("should return all workout plans for a user", async () => {
 			(dynamoDb.send as jest.Mock).mockResolvedValue({
-				Items: [{ workoutID: mockWorkoutID, name: "Plan A" }],
+				Items: [{ workoutID: mockWorkoutID, name: "Plan A", description: "Description Plan A" }],
 			});
 
 			const res = await request(app).get("/api/workout-plans").set("Authorization", "Bearer mock-token");
 
 			expect(res.status).toBe(200);
-			expect(res.body).toEqual([{ workoutID: mockWorkoutID, name: "Plan A" }]);
+			expect(res.body).toEqual([{ workoutID: mockWorkoutID, name: "Plan A", description: "Description Plan A" }]);
 		});
 	});
 
@@ -65,13 +65,13 @@ describe("WorkoutPlans Controller", () => {
 	describe("GET /workoutPlans/:id", () => {
 		it("should return a workout plan by ID", async () => {
 			(dynamoDb.send as jest.Mock).mockResolvedValue({
-				Item: { workoutID: mockWorkoutID, name: "Test Plan Title", userID: "mock-user-id" },
+				Item: { workoutID: mockWorkoutID, name: "Test Plan Title", userID: "mock-user-id", description: "Description Test Plan" },
 			});
 
 			const res = await request(app).get(`/api/workout-plans/${mockWorkoutID}`).set("Authorization", "Bearer mock-token");
 
 			expect(res.status).toBe(200);
-			expect(res.body).toEqual({ workoutID: mockWorkoutID, name: "Test Plan Title", userID: "mock-user-id" });
+			expect(res.body).toEqual({ workoutID: mockWorkoutID, name: "Test Plan Title", userID: "mock-user-id", description: "Description Test Plan" });
 		});
 
 		it("should return 404 if workout plan not found", async () => {

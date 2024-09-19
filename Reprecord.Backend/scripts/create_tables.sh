@@ -31,24 +31,23 @@ aws dynamodb create-table \
 aws dynamodb create-table \
     --table-name Exercises \
     --attribute-definitions \
-        AttributeName=workoutID,AttributeType=S \
         AttributeName=exerciseID,AttributeType=S \
+        AttributeName=workoutID,AttributeType=S \
     --key-schema \
-        AttributeName=workoutID,KeyType=HASH \
-        AttributeName=exerciseID,KeyType=RANGE \
+        AttributeName=exerciseID,KeyType=HASH \
     --provisioned-throughput \
         ReadCapacityUnits=5,WriteCapacityUnits=5 \
+    --global-secondary-indexes \
+        IndexName=workoutIDIndex,KeySchema=["{AttributeName=workoutID,KeyType=HASH}"],Projection="{ProjectionType=ALL}",ProvisionedThroughput="{ReadCapacityUnits=5,WriteCapacityUnits=5}" \
     --output table \
     --endpoint-url $ENDPOINT_URL
 
 aws dynamodb create-table \
     --table-name Logs \
     --attribute-definitions \
-        AttributeName=exerciseID,AttributeType=S \
         AttributeName=logID,AttributeType=S \
     --key-schema \
-        AttributeName=exerciseID,KeyType=HASH \
-        AttributeName=logID,KeyType=RANGE \
+        AttributeName=logID,KeyType=HASH \
     --provisioned-throughput \
         ReadCapacityUnits=5,WriteCapacityUnits=5 \
     --output table \
