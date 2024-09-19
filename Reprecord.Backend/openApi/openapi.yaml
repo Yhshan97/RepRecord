@@ -228,7 +228,35 @@ paths:
                 "204":
                     description: Workout plan deleted
 
-    /workout-plans/{planId}/exercises:
+    /workout-plans/{id}/exercises:
+        get:
+            tags:
+                - Exercises
+            operationId: getPlanExercises
+            x-eov-operation-handler: controllers/ExerciseController
+            summary: Get all exercises for the user's workout plan
+            parameters:
+                - name: id
+                  in: path
+                  required: true
+                  schema:
+                      type: string
+                      format: uuid
+            responses:
+                "200":
+                    description: List of exercises
+                    content:
+                        application/json:
+                            schema:
+                                type: array
+                                items:
+                                    $ref: "#/components/schemas/Exercise"
+                "404":
+                    description: Workout plan not found
+                    content:
+                        application/json:
+                            schema:
+                                $ref: "#/components/schemas/Error"
         post:
             tags:
                 - Exercises
@@ -236,7 +264,7 @@ paths:
             x-eov-operation-handler: controllers/ExerciseController
             summary: Add an exercise to a workout plan
             parameters:
-                - name: planId
+                - name: id
                   in: path
                   required: true
                   schema:
@@ -254,6 +282,12 @@ paths:
                         application/json:
                             schema:
                                 $ref: "#/components/schemas/Exercise"
+                "404":
+                    description: Workout plan not found
+                    content:
+                        application/json:
+                            schema:
+                                $ref: "#/components/schemas/Error"
 
     /exercises/{id}:
         put:
@@ -406,8 +440,12 @@ components:
                     format: uuid
                 name:
                     type: string
+
         WorkoutPlan:
             type: object
+            required:
+                - name
+                - description
             properties:
                 id:
                     type: string
@@ -432,28 +470,22 @@ components:
 
         Exercise:
             type: object
+            required:
+                - name
+                - description
             properties:
                 id:
                     type: string
                     format: uuid
-                workoutPlanId:
+                    readOnly: true
+                workoutID:
                     type: string
                     format: uuid
+                    readOnly: true
                 name:
                     type: string
-                sets:
-                    type: integer
-                reps:
-                    type: integer
-                weight:
-                    type: number
-                    format: float
-                createdAt:
+                description:
                     type: string
-                    format: date-time
-                updatedAt:
-                    type: string
-                    format: date-time
 
         Log:
             type: object
