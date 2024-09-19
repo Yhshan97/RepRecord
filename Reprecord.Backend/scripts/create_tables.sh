@@ -46,10 +46,14 @@ aws dynamodb create-table \
     --table-name Logs \
     --attribute-definitions \
         AttributeName=logID,AttributeType=S \
+        AttributeName=exerciseID,AttributeType=S \
+        AttributeName=date,AttributeType=S \
     --key-schema \
         AttributeName=logID,KeyType=HASH \
     --provisioned-throughput \
         ReadCapacityUnits=5,WriteCapacityUnits=5 \
+    --global-secondary-indexes \
+        IndexName=exerciseIDIndex,KeySchema=["{AttributeName=exerciseID,KeyType=HASH},{AttributeName=date, KeyType=RANGE}"],Projection="{ProjectionType=ALL}",ProvisionedThroughput="{ReadCapacityUnits=5,WriteCapacityUnits=5}" \
     --output table \
     --endpoint-url $ENDPOINT_URL
 

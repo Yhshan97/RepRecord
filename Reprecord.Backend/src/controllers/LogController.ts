@@ -1,8 +1,21 @@
 import { Request, Response, NextFunction } from "express";
+import { dynamoDb } from "../utils/awsConfig";
+import { PutCommand, GetCommand, UpdateCommand, DeleteCommand, QueryCommand } from "@aws-sdk/lib-dynamodb";
+import { v4 as uuidv4 } from "uuid";
+import { ReturnValue } from "@aws-sdk/client-dynamodb";
+
+const TableName = "Logs";
 
 export const logExercise = async (req: Request, res: Response, next: NextFunction) => {
 	try {
-		const log = req.body;
+		const { date, set, reps, weight } = req.body.log;
+		const exerciseID = req.params.id;
+		const log = { id: uuidv4(), exerciseID, date, set, reps, weight };
+		const params = { TableName, Item: log };
+
+		const command = new PutCommand(params);
+		await dynamoDb.send(command);
+
 		res.status(201).json(log);
 	} catch (err) {
 		next(err);
