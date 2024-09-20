@@ -349,6 +349,12 @@ paths:
                   schema:
                       type: string
                       format: uuid
+                - name: limit
+                  in: query
+                  required: false
+                  schema:
+                      type: integer
+                      format: int32
             responses:
                 "200":
                     description: List of logs
@@ -365,13 +371,13 @@ paths:
             x-eov-operation-handler: controllers/LogController
             summary: Log an exercise
             parameters:
-              - name: id
-                in: path
-                required: true
-                description: The ID of the exercise
-                schema:
-                    type: string
-                    format: uuid
+                - name: id
+                  in: path
+                  required: true
+                  description: The ID of the exercise
+                  schema:
+                      type: string
+                      format: uuid
             requestBody:
                 content:
                     application/json:
@@ -489,9 +495,7 @@ components:
             type: object
             required:
                 - date
-                - set
-                - reps
-                - weight
+                - sets
             properties:
                 id:
                     type: string
@@ -504,13 +508,18 @@ components:
                 date:
                     type: string
                     format: date
-                set:
-                    type: integer
-                reps:
-                    type: integer
-                weight:
-                    type: number
-                    format: float
+                sets:
+                    type: array
+                    items:
+                        type: object
+                        properties:
+                            setNumber:
+                                type: integer
+                            reps:
+                                type: integer
+                            weight:
+                                type: number
+
         Error:
             type: object
             properties:
