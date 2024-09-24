@@ -239,6 +239,7 @@ paths:
                 - name: id
                   in: path
                   required: true
+                  description: The ID of the workout plan
                   schema:
                       type: string
                       format: uuid
@@ -267,6 +268,7 @@ paths:
                 - name: id
                   in: path
                   required: true
+                  description: The ID of the workout plan
                   schema:
                       type: string
                       format: uuid
@@ -332,13 +334,50 @@ paths:
                 "204":
                     description: Exercise deleted
 
-    /logs:
+    /exercises/{id}/logs:
+        get:
+            tags:
+                - Logs
+            operationId: getAllLogs
+            x-eov-operation-handler: controllers/LogController
+            summary: Get logs for an exercise
+            parameters:
+                - name: id
+                  in: path
+                  required: true
+                  description: The ID of the exercise
+                  schema:
+                      type: string
+                      format: uuid
+                - name: limit
+                  in: query
+                  required: false
+                  schema:
+                      type: integer
+                      format: int32
+            responses:
+                "200":
+                    description: List of logs
+                    content:
+                        application/json:
+                            schema:
+                                type: array
+                                items:
+                                    $ref: "#/components/schemas/Log"
         post:
             tags:
                 - Logs
             operationId: logExercise
             x-eov-operation-handler: controllers/LogController
             summary: Log an exercise
+            parameters:
+                - name: id
+                  in: path
+                  required: true
+                  description: The ID of the exercise
+                  schema:
+                      type: string
+                      format: uuid
             requestBody:
                 content:
                     application/json:
@@ -351,43 +390,8 @@ paths:
                         application/json:
                             schema:
                                 $ref: "#/components/schemas/Log"
-        get:
-            tags:
-                - Logs
-            operationId: getAllLogs
-            x-eov-operation-handler: controllers/LogController
-            summary: Get all logs for the logged-in user
-            responses:
-                "200":
-                    description: List of logs
-                    content:
-                        application/json:
-                            schema:
-                                type: array
-                                items:
-                                    $ref: "#/components/schemas/Log"
 
     /logs/{id}:
-        get:
-            tags:
-                - Logs
-            operationId: getLogById
-            x-eov-operation-handler: controllers/LogController
-            summary: Get a specific log
-            parameters:
-                - name: id
-                  in: path
-                  required: true
-                  schema:
-                      type: string
-                      format: uuid
-            responses:
-                "200":
-                    description: Log details
-                    content:
-                        application/json:
-                            schema:
-                                $ref: "#/components/schemas/Log"
         put:
             tags:
                 - Logs
@@ -489,29 +493,33 @@ components:
 
         Log:
             type: object
+            required:
+                - date
+                - sets
             properties:
                 id:
                     type: string
                     format: uuid
-                userId:
+                    readOnly: true
+                exerciseID:
                     type: string
                     format: uuid
-                workoutPlanId:
-                    type: string
-                    format: uuid
-                exerciseId:
-                    type: string
-                    format: uuid
+                    readOnly: true
                 date:
                     type: string
                     format: date
                 sets:
-                    type: integer
-                reps:
-                    type: integer
-                weight:
-                    type: number
-                    format: float
+                    type: array
+                    items:
+                        type: object
+                        properties:
+                            setNumber:
+                                type: integer
+                            reps:
+                                type: integer
+                            weight:
+                                type: number
+
         Error:
             type: object
             properties:
