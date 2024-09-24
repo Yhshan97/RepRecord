@@ -58,8 +58,12 @@ app.use((err: Error, _req: express.Request, res: express.Response, _next: expres
 	res.status((err as any).status || 500).send(err.message);
 });
 
-const server = app.listen(port, () => {
-	console.log(`Server running at http://localhost:${port}`);
-});
+// Export the app instance for testing
+export { app };
 
-export { app, server };
+// Start the server only if not in a test environment
+if (process.env.NODE_ENV !== "test") {
+	app.listen(port, () => {
+		console.log(`Server running at http://localhost:${port}`);
+	});
+}

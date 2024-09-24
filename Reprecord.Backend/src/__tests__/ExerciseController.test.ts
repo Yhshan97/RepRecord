@@ -1,5 +1,5 @@
 import request from "supertest";
-import { app, server } from "../server";
+import { app } from "../server";
 import { dynamoDb } from "../utils/awsConfig";
 import { v4 as uuidv4, validate as uuidValidate } from "uuid";
 
@@ -18,10 +18,6 @@ jest.mock("../middleware/auth", () => ({
 
 afterEach(() => {
 	jest.clearAllMocks();
-});
-
-afterAll((done) => {
-	server.close(done);
 });
 
 describe("Exercise Controller", () => {

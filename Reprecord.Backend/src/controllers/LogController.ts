@@ -1,6 +1,6 @@
 import { Request, Response, NextFunction } from "express";
 import { dynamoDb } from "../utils/awsConfig";
-import { PutCommand, GetCommand, UpdateCommand, DeleteCommand, QueryCommand } from "@aws-sdk/lib-dynamodb";
+import { PutCommand, UpdateCommand, DeleteCommand, QueryCommand } from "@aws-sdk/lib-dynamodb";
 import { v4 as uuidv4 } from "uuid";
 import { ReturnValue } from "@aws-sdk/client-dynamodb";
 
@@ -45,20 +45,6 @@ export const getAllLogs = async (req: Request, res: Response, next: NextFunction
 		const result = await dynamoDb.send(command);
 
 		res.status(200).json(result.Items);
-	} catch (err) {
-		next(err);
-	}
-};
-
-export const getLogById = async (req: Request, res: Response, next: NextFunction) => {
-	try {
-		const logID = req.params.id;
-		const params = { TableName, Key: { logID } };
-
-		const command = new GetCommand(params);
-		const result = await dynamoDb.send(command);
-
-		res.status(200).json(result);
 	} catch (err) {
 		next(err);
 	}
