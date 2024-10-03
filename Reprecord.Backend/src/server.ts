@@ -11,12 +11,28 @@ import express from "express";
 import * as OpenApiValidator from "express-openapi-validator";
 import { swaggerUi, swaggerDocument } from "./middleware/swagger";
 import { authenticateToken } from "./middleware/auth";
+import { rateLimit } from "express-rate-limit";
+import helmet from "helmet";
 
 const app = express();
 const port = config.get<number>("app.port");
 
 // Middleware for parsing JSON bodies
 app.use(express.json());
+
+// Middleware for adding security headers
+app.use(helmet());
+
+// Rate limiting middleware
+app.use(
+	rateLimit({
+		windowMs: 15 * 60 * 1000, // 15 minutes
+		limit: 100,
+		standardHeaders: "draft-7",
+		legacyHeaders: false,
+		message: "Too many requests, please try again later.",
+	})
+);
 
 // Enable Swagger and logging in development mode
 if (process.env.NODE_ENV === "development" || process.env.NODE_ENV === "localdevelopment") {
