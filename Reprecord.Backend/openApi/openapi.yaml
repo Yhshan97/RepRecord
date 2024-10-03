@@ -9,6 +9,8 @@ servers:
       description: Local development server
     - url: http://localhost:3001/api
       description: Local dev server
+    - url: https://reprecord.onrender.com/api
+      description: Deployed dev server
 
 security:
     - bearerAuth: []
