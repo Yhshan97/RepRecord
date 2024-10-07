@@ -14,7 +14,7 @@ export const getPlanExercises = async (req: Request, res: Response, next: NextFu
 
 		// Validate workout plan exists
 		const workoutPlanParams = {
-			TableName: "WorkoutPlans",
+			TableName: dynamoTables.WorkoutPlan.name,
 			Key: { userID, workoutID },
 		};
 
@@ -52,7 +52,7 @@ export const addExerciseToWorkoutPlan = async (req: Request, res: Response, next
 
 		// Validate workout plan exists
 		const workoutPlanParams = {
-			TableName: "WorkoutPlans",
+			TableName: dynamoTables.WorkoutPlan.name,
 			Key: { userID, workoutID },
 		};
 
