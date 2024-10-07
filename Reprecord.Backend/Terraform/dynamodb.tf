@@ -29,6 +29,11 @@ resource "aws_dynamodb_table" "exercises" {
     type = "S"
   }
 
+  attribute {
+    name = "workoutID"
+    type = "S"
+  }
+
   global_secondary_index {
     name               = "workoutIDIndex"
     hash_key           = "workoutID"
@@ -47,6 +52,16 @@ resource "aws_dynamodb_table" "logs" {
 
   attribute {
     name = "logID"
+    type = "S"
+  }
+
+  attribute {
+    name = "exerciseID"
+    type = "S"
+  }
+  
+  attribute {
+    name = "date"
     type = "S"
   }
 
