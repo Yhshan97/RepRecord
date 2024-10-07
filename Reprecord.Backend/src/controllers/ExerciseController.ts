@@ -1,17 +1,17 @@
 import { Request, Response, NextFunction } from "express";
-import { dynamoDb } from "../utils/awsConfig";
+import { dynamoDb, dynamoTables } from "../utils/awsConfig";
 import { PutCommand, GetCommand, UpdateCommand, DeleteCommand, QueryCommand } from "@aws-sdk/lib-dynamodb";
 import { v4 as uuidv4 } from "uuid";
 import { ReturnValue } from "@aws-sdk/client-dynamodb";
 
-const TableName = "Exercises";
-const IndexName = "workoutIDIndex";
+const TableName = dynamoTables.Exercise.name;
+const IndexName = dynamoTables.Exercise.GSI[0];
 
 export const getPlanExercises = async (req: Request, res: Response, next: NextFunction) => {
 	try {
 		const workoutID = req.params.id;
 		const userID = req.userID;
-		
+
 		// Validate workout plan exists
 		const workoutPlanParams = {
 			TableName: "WorkoutPlans",

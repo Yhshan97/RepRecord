@@ -1,3 +1,7 @@
+variable "environment" {
+  description = "Environment"
+}
+
 variable "google_client_id" {
   description = "Google app client ID"
 }

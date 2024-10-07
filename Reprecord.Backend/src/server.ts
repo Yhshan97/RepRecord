@@ -34,6 +34,8 @@ app.use(
 	})
 );
 
+app.set("trust proxy", 1);
+
 // Enable Swagger and logging in development mode
 if (process.env.NODE_ENV === "development" || process.env.NODE_ENV === "localdevelopment") {
 	// Enable CORS for all routes

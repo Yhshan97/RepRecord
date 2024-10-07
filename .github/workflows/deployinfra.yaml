@@ -31,7 +31,7 @@ jobs:
         working-directory: ./Reprecord.Backend/Terraform
     strategy:
       matrix:
-        environment: [dev, qas] #, PRD]
+        environment: [dev, qas, prd]
 
     environment: ${{ matrix.environment }}
     steps:
