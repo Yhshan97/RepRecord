@@ -1,5 +1,6 @@
+environment    = "development"
 user_pool_name = "reprecord-pool-DEV"
 domain_name    = "reprecordd"
 client_name    = "reprecord-client-dev"
-callback_url   = "http://localhost:3000/federatedLogin"
-logout_url     = "http://localhost:3000/logged_out"
+callback_url   = "https://reprecorddev.onrender.com/federatedLogin"
+logout_url     = "https://reprecorddev.onrender.com/logged_out"

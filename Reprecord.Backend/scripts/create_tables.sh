@@ -1,6 +1,7 @@
 #!/bin/bash
 
 ENDPOINT_URL="http://localhost:8000"
+ENV="localdevelopment"
 export AWS_PAGER=""
 
 # Confirmation prompt
@@ -10,13 +11,13 @@ if [ "$confirm" != "y" ]; then
 else
     echo "Deleting and recreating tables..."
 
-    aws dynamodb delete-table --table-name WorkoutPlans --endpoint-url $ENDPOINT_URL --output table
-    aws dynamodb delete-table --table-name Exercises --endpoint-url $ENDPOINT_URL --output table
-    aws dynamodb delete-table --table-name Logs --endpoint-url $ENDPOINT_URL --output table
+    aws dynamodb delete-table --table-name ${ENV}_WorkoutPlans --endpoint-url $ENDPOINT_URL --output table
+    aws dynamodb delete-table --table-name ${ENV}_Exercises --endpoint-url $ENDPOINT_URL --output table
+    aws dynamodb delete-table --table-name ${ENV}_Logs --endpoint-url $ENDPOINT_URL --output table
 fi
 
 aws dynamodb create-table \
-    --table-name WorkoutPlans \
+    --table-name ${ENV}_WorkoutPlans \
     --attribute-definitions \
         AttributeName=userID,AttributeType=S \
         AttributeName=workoutID,AttributeType=S \
@@ -29,7 +30,7 @@ aws dynamodb create-table \
     --endpoint-url $ENDPOINT_URL
 
 aws dynamodb create-table \
-    --table-name Exercises \
+    --table-name ${ENV}_Exercises \
     --attribute-definitions \
         AttributeName=exerciseID,AttributeType=S \
         AttributeName=workoutID,AttributeType=S \
@@ -43,7 +44,7 @@ aws dynamodb create-table \
     --endpoint-url $ENDPOINT_URL
 
 aws dynamodb create-table \
-    --table-name Logs \
+    --table-name ${ENV}_Logs \
     --attribute-definitions \
         AttributeName=logID,AttributeType=S \
         AttributeName=exerciseID,AttributeType=S \

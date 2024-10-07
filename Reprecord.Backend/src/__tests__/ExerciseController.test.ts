@@ -7,6 +7,11 @@ jest.mock("../utils/awsConfig", () => ({
 	dynamoDb: {
 		send: jest.fn(),
 	},
+	dynamoTables: {
+		WorkoutPlan: { name: `local_WorkoutPlans`, GSI: [""] },
+		Exercise: { name: `local_Exercises`, GSI: ["workoutIDIndex"] },
+		Log: { name: `local_Logs`, GSI: ["exerciseIDIndex"] },
+	}
 }));
 
 jest.mock("../middleware/auth", () => ({

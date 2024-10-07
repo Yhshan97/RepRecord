@@ -1,10 +1,10 @@
 import { Request, Response, NextFunction } from "express";
-import { dynamoDb } from "../utils/awsConfig";
+import { dynamoDb, dynamoTables } from "../utils/awsConfig";
 import { PutCommand, GetCommand, UpdateCommand, DeleteCommand, QueryCommand, GetCommandInput } from "@aws-sdk/lib-dynamodb";
 import { ReturnValue } from "@aws-sdk/client-dynamodb";
 import { v4 as uuidv4 } from "uuid";
 
-const TableName = "WorkoutPlans";
+const TableName = dynamoTables.WorkoutPlan.name;
 
 export const getAllWorkoutPlans = async (req: Request, res: Response, next: NextFunction) => {
 	try {

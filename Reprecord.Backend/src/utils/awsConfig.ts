@@ -12,3 +12,11 @@ export const dynamoDb = new DynamoDBClient({
 export const cognito = new CognitoIdentityClient({
 	// region: process.env.AWS_REGION,
 });
+
+const env = process.env.NODE_ENV;
+
+export const dynamoTables = {
+	WorkoutPlan: { name: `${env}_WorkoutPlans`, GSI: [""] },
+	Exercise: { name: `${env}_Exercises`, GSI: ["workoutIDIndex"] },
+	Log: { name: `${env}_Logs`, GSI: ["exerciseIDIndex"] },
+};

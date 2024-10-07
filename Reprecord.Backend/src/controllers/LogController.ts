@@ -1,10 +1,11 @@
 import { Request, Response, NextFunction } from "express";
-import { dynamoDb } from "../utils/awsConfig";
+import { dynamoDb, dynamoTables } from "../utils/awsConfig";
 import { PutCommand, UpdateCommand, DeleteCommand, QueryCommand } from "@aws-sdk/lib-dynamodb";
 import { v4 as uuidv4 } from "uuid";
 import { ReturnValue } from "@aws-sdk/client-dynamodb";
 
-const TableName = "Logs";
+const TableName = dynamoTables.Log.name;
+const IndexName = dynamoTables.Log.GSI[0];
 
 export const logExercise = async (req: Request, res: Response, next: NextFunction) => {
 	try {
@@ -29,7 +30,7 @@ export const getAllLogs = async (req: Request, res: Response, next: NextFunction
 
 		const params = {
 			TableName,
-			IndexName: "exerciseIDIndex",
+			IndexName,
 			KeyConditionExpression: "#exerciseID = :exerciseID",
 			ExpressionAttributeNames: {
 				"#exerciseID": "exerciseID",
