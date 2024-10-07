@@ -3,8 +3,6 @@
 		"port": 3002
 	},
 	"db": {
-		"host": "localhost",
-		"port": 27017,
-		"name": "myapp_qas"
+		"host": "https://dynamodb.us-east-2.amazonaws.com"
 	}
 }
