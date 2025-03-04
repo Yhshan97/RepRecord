@@ -1,40 +1,18 @@
 import { Image, StyleSheet, Platform, TouchableOpacity } from "react-native";
-
 import { HelloWave } from "@/components/HelloWave";
 import ParallaxScrollView from "@/components/ParallaxScrollView";
 import { ThemedText } from "@/components/ThemedText";
 import { ThemedView } from "@/components/ThemedView";
-import * as WebBrowser from "expo-web-browser";
-import * as Linking from "expo-linking";
+import { useContext } from "react";
+// import { storage, STORAGE_KEYS } from "@/helpers/storage";
+import { AuthContext } from "@/context/AuthContext";
 
 export default function HomeScreen() {
-	// Construct your login URL with the redirect URI
-	const loginUrl = "";
-	const handleLoginPress = async () => {
-		// Create a redirect URI using Linking
-		const redirectUri = "";
+	const authContext = useContext(AuthContext);
 
-		try {
-			// Open the authentication session
-			const result = await WebBrowser.openAuthSessionAsync(loginUrl, redirectUri);
-			console.log(result);
-			if (result.type === "success" && result.url) {
-				// Handle the redirect and extract the authorization code from the URL
-				const authCode = extractAuthCode(result.url);
-				console.log(authCode);
-			} else {
-				// Handle cancellation or errors
-				console.log("Authentication canceled or failed");
-			}
-		} catch (error) {
-			console.error("Failed to open browser:", error);
-		}
-	};
-
-	const extractAuthCode = (url: string) => {
-		const parsed = Linking.parse(url);
-		return parsed.queryParams ? parsed.queryParams["code"] : null;
-	};
+	if (!authContext) {
+		return null;
+	}
 
 	return (
 		<ParallaxScrollView
@@ -47,13 +25,13 @@ export default function HomeScreen() {
 			}
 		>
 			<ThemedView style={styles.titleContainer}>
-				<ThemedText type="title">Welcome!</ThemedText>
+				<ThemedText type="title">Welcome, you are logged in!</ThemedText>
 				<HelloWave />
 			</ThemedView>
 			<ThemedView style={styles.stepContainer}>
 				<ThemedText type="subtitle">Step 1: Try it </ThemedText>
 				<ThemedText>
-					Edit <ThemedText type="defaultSemiBold">app/(tabs)/index.tsx</ThemedText> to see changes. Press{" "}
+					Edit <ThemedText type="defaultSemiBold">app/(tabs)/HomeScreen.tsx</ThemedText> to see changes. Press{" "}
 					<ThemedText type="defaultSemiBold">
 						{Platform.select({
 							ios: "cmd + d",
@@ -66,7 +44,7 @@ export default function HomeScreen() {
 			</ThemedView>
 			<ThemedView style={styles.stepContainer}>
 				<ThemedText type="subtitle">Step 2: Explore</ThemedText>
-				<ThemedText>{loginUrl}</ThemedText>
+				<ThemedText>{}</ThemedText>
 			</ThemedView>
 			<ThemedView style={styles.stepContainer}>
 				<ThemedText type="subtitle">Step 3: Get a fresh start</ThemedText>
@@ -76,16 +54,13 @@ export default function HomeScreen() {
 					<ThemedText type="defaultSemiBold">app</ThemedText> to <ThemedText type="defaultSemiBold">app-example</ThemedText>.
 				</ThemedText>
 			</ThemedView>
-
-			<ThemedView style={styles.stepContainer}>
-				<ThemedText type="subtitle">Login</ThemedText>
-				<TouchableOpacity
-					style={styles.loginButton}
-					onPress={handleLoginPress}
-				>
-					<ThemedText style={styles.buttonText}>Sign in with Cognito</ThemedText>
-				</TouchableOpacity>
-			</ThemedView>
+			<TouchableOpacity
+				style={styles.logoutButton}
+				onPress={() => authContext.logout()}
+			>
+				<ThemedText style={styles.buttonText}>Log Out</ThemedText>
+			</TouchableOpacity>
+			<ThemedView style={styles.stepContainer}></ThemedView>
 		</ParallaxScrollView>
 	);
 }
@@ -117,5 +92,12 @@ const styles = StyleSheet.create({
 	buttonText: {
 		color: "white",
 		fontWeight: "bold",
+	},
+	logoutButton: {
+		backgroundColor: "red", // Use your theme color
+		padding: 15,
+		borderRadius: 8,
+		alignItems: "center",
+		marginTop: 10,
 	},
 });
