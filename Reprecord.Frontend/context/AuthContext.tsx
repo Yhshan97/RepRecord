@@ -14,7 +14,7 @@ export const AuthContext = createContext<AuthContextProps | undefined>(undefined
 export const AuthProvider = ({ children }: { children: ReactNode }) => {
 	const [isLogged, setIsLogged] = useState(false);
 	const [isLoading, setIsLoading] = useState(true);
-	const pathname = usePathname();
+	const currentPath = usePathname();
 
 	useEffect(() => {
 		const checkToken = async () => {
@@ -27,23 +27,23 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
 	}, []);
 
 	useEffect(() => {
-		if (!isLoading && !isLogged && pathname !== "/login") {
-			router.replace("/login");
+		if (isLoading) return;
+
+		if (!isLogged && currentPath !== "/login") {
+			router.dismissTo("/login");
+		} else if (isLogged && currentPath === "/login") {
+			router.dismissTo("/");
 		}
-	}, [isLoading, isLogged, pathname]);
+	}, [isLogged, isLoading]);
 
 	const login = async () => {
-		if (await handleLoginPress()) {
-			setIsLogged(true);
-			router.replace("/");
-		}
+		const status = await handleLoginPress();
+		setIsLogged(status);
 	};
 
 	const logout = async () => {
-		if (await handleLogoutPress()) {
-			setIsLogged(false);
-			router.replace("/login");
-		}
+		const status = await handleLogoutPress();
+		setIsLogged(!status);
 	};
 
 	if (isLoading) {
