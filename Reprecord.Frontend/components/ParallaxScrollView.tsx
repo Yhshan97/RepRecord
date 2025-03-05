@@ -6,7 +6,7 @@ import { ThemedView } from "@/components/ThemedView";
 import { useBottomTabOverflow } from "@/components/ui/TabBarBackground";
 import { useColorScheme } from "@/hooks/useColorScheme";
 
-const HEADER_HEIGHT = 300;
+const HEADER_HEIGHT = 200;
 
 type Props = PropsWithChildren<{
 	headerImage: ReactElement;
