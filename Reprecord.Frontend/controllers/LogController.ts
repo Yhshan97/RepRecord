@@ -31,7 +31,7 @@ export const getExerciseLogs = async (exerciseId: string) => {
 
 export const createExerciseLog = async (exerciseId: string, log: LogRequest) => {
 	try {
-		return await ApiClient.post<Log>(`${exerciseEndpoint}/${exerciseId}/logs`, { body: JSON.stringify(log) });
+		return await ApiClient.post<Log>(`${exerciseEndpoint}/${exerciseId}/logs`, JSON.stringify(log));
 	} catch (error) {
 		console.error(error);
 	}
@@ -39,7 +39,7 @@ export const createExerciseLog = async (exerciseId: string, log: LogRequest) => 
 
 export const updateLog = async (logId: string, log: LogRequest) => {
 	try {
-		return await ApiClient.put<Log>(`${endpoint}/${logId}`, { body: JSON.stringify(log) });
+		return await ApiClient.put<Log>(`${endpoint}/${logId}`, JSON.stringify(log));
 	} catch (error) {
 		console.error(error);
 	}

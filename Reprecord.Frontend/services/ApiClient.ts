@@ -30,6 +30,7 @@ class ApiClient {
 
 		if (requireAuth) {
 			const token = await storage.getItem(STORAGE_KEYS.ACCESS_TOKEN);
+
 			if (!token) {
 				throw new Error("no access token found");
 			}
@@ -43,8 +44,6 @@ class ApiClient {
 
 		try {
 			const res = await fetch(url, config);
-
-			console.log("API:", `(${res.status})`, url);
 
 			if (!res.ok) {
 				throw new Error(`ApiClient error (${res.status}): ${res.statusText}`);
@@ -64,7 +63,7 @@ class ApiClient {
 		return this.request<T>(endpoint, {
 			...extraOptions,
 			method: "POST",
-			body: JSON.stringify(data),
+			body: data,
 		});
 	}
 
@@ -72,7 +71,7 @@ class ApiClient {
 		return this.request<T>(endpoint, {
 			...extraOptions,
 			method: "PUT",
-			body: JSON.stringify(data),
+			body: data,
 		});
 	}
 

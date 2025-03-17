@@ -50,7 +50,7 @@ describe("ApiClient", () => {
 				"Content-Type": "application/json",
 				Authorization: `Bearer ${mockToken}`,
 			},
-			body: JSON.stringify(data),
+			body: data,
 		});
 		expect(res).toEqual(mockResponse);
 	});
@@ -69,7 +69,7 @@ describe("ApiClient", () => {
 				"Content-Type": "application/json",
 				Authorization: `Bearer ${mockToken}`,
 			},
-			body: JSON.stringify(data),
+			body: data,
 		});
 		expect(res).toEqual(mockResponse);
 	});

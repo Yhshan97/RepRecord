@@ -37,7 +37,10 @@ describe("UserController", () => {
 
 		const res = await putUser(mockUser);
 
-		expect(ApiClient.put).toHaveBeenCalledWith(`${process.env.EXPO_PUBLIC_API_BASE_URL}/users/1`, { body: JSON.stringify(mockUser) });
+		expect(ApiClient.put).toHaveBeenCalledWith(
+			`${process.env.EXPO_PUBLIC_API_BASE_URL}/users/1`,
+			JSON.stringify(mockUser)
+		);
 		expect(res).toEqual(mockUser);
 	});
 
@@ -47,7 +50,10 @@ describe("UserController", () => {
 
 		const res = await putUser(mockUser);
 
-		expect(ApiClient.put).toHaveBeenCalledWith(`${process.env.EXPO_PUBLIC_API_BASE_URL}/users/1`, { body: JSON.stringify(mockUser) });
+		expect(ApiClient.put).toHaveBeenCalledWith(
+			`${process.env.EXPO_PUBLIC_API_BASE_URL}/users/1`,
+			JSON.stringify(mockUser)
+		);
 		expect(spy).toHaveBeenCalledWith(new Error("test error"));
 		expect(res).toBeUndefined();
 

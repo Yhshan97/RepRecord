@@ -24,9 +24,7 @@ export const getWorkoutExercises = async (workoutId: string) => {
 
 export const createWorkoutExercise = async (workoutId: string, exercise: ExerciseRequest) => {
 	try {
-		return await ApiClient.post<Exercise>(`${workoutEndpoint}/${workoutId}/exercises`, {
-			body: JSON.stringify(exercise),
-		});
+		return await ApiClient.post<Exercise>(`${workoutEndpoint}/${workoutId}/exercises`, JSON.stringify(exercise));
 	} catch (error) {
 		console.error(error);
 	}
@@ -34,7 +32,7 @@ export const createWorkoutExercise = async (workoutId: string, exercise: Exercis
 
 export const updateExercise = async (exerciseId: string, exercise: ExerciseRequest) => {
 	try {
-		return await ApiClient.put<Exercise>(`${endpoint}/${exerciseId}`, { body: JSON.stringify(exercise) });
+		return await ApiClient.put<Exercise>(`${endpoint}/${exerciseId}`, JSON.stringify(exercise));
 	} catch (error) {
 		console.error(error);
 	}

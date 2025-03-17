@@ -12,7 +12,5 @@ export const getUserSelf = async () => {
 };
 
 export const putUser = async (user: User) => {
-	return await ApiClient.put<User>(`${endpoint}/${user.id}`, {
-		body: JSON.stringify(user),
-	}).catch((err) => console.error(err));
+	return await ApiClient.put<User>(`${endpoint}/${user.id}`, JSON.stringify(user)).catch((err) => console.error(err));
 };

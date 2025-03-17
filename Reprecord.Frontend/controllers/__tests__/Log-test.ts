@@ -54,9 +54,10 @@ describe("LogController", () => {
 
 		const res = await createExerciseLog("1", mockLogRequest);
 
-		expect(ApiClient.post).toHaveBeenCalledWith(`${process.env.EXPO_PUBLIC_API_BASE_URL}/exercises/1/logs`, {
-			body: JSON.stringify(mockLogRequest),
-		});
+		expect(ApiClient.post).toHaveBeenCalledWith(
+			`${process.env.EXPO_PUBLIC_API_BASE_URL}/exercises/1/logs`,
+			JSON.stringify(mockLogRequest)
+		);
 		expect(res).toEqual(mockLog);
 	});
 
@@ -66,9 +67,10 @@ describe("LogController", () => {
 
 		const res = await createExerciseLog("1", mockLogRequest);
 
-		expect(ApiClient.post).toHaveBeenCalledWith(`${process.env.EXPO_PUBLIC_API_BASE_URL}/exercises/1/logs`, {
-			body: JSON.stringify(mockLogRequest),
-		});
+		expect(ApiClient.post).toHaveBeenCalledWith(
+			`${process.env.EXPO_PUBLIC_API_BASE_URL}/exercises/1/logs`,
+			JSON.stringify(mockLogRequest)
+		);
 		expect(spy).toHaveBeenCalledWith(new Error("test error"));
 		expect(res).toBeUndefined();
 
@@ -80,9 +82,10 @@ describe("LogController", () => {
 
 		const res = await updateLog("1", mockLogRequest);
 
-		expect(ApiClient.put).toHaveBeenCalledWith(`${process.env.EXPO_PUBLIC_API_BASE_URL}/logs/1`, {
-			body: JSON.stringify(mockLogRequest),
-		});
+		expect(ApiClient.put).toHaveBeenCalledWith(
+			`${process.env.EXPO_PUBLIC_API_BASE_URL}/logs/1`,
+			JSON.stringify(mockLogRequest)
+		);
 		expect(res).toEqual(mockLog);
 	});
 
@@ -92,9 +95,10 @@ describe("LogController", () => {
 
 		const res = await updateLog("1", mockLogRequest);
 
-		expect(ApiClient.put).toHaveBeenCalledWith(`${process.env.EXPO_PUBLIC_API_BASE_URL}/logs/1`, {
-			body: JSON.stringify(mockLogRequest),
-		});
+		expect(ApiClient.put).toHaveBeenCalledWith(
+			`${process.env.EXPO_PUBLIC_API_BASE_URL}/logs/1`,
+			JSON.stringify(mockLogRequest)
+		);
 		expect(spy).toHaveBeenCalledWith(new Error("test error"));
 		expect(res).toBeUndefined();
 

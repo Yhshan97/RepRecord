@@ -1,7 +1,7 @@
-import { View, Text } from "react-native";
+import { View, Text, Pressable, Button } from "react-native";
 
 import { useEffect, useState } from "react";
-import { getUserWorkouts, Workout, WorkoutRequest } from "@/controllers/WorkoutController";
+import { createWorkout, getUserWorkouts, Workout, WorkoutRequest } from "@/controllers/WorkoutController";
 
 export default function WorkoutScreen() {
 	const [workouts, setWorkouts] = useState([] as Workout[]);
@@ -13,12 +13,20 @@ export default function WorkoutScreen() {
 			setWorkouts(data ?? []);
 			setLoading(false);
 		};
-		console.log("fetching workouts");
 
 		fetchWorkouts();
-
-		console.log(workouts);
 	}, []);
+
+	const addWorkout = async () => {
+		const workout: WorkoutRequest = {
+			name: "Test Workout",
+			description: "test description",
+		};
+		const newWorkout = await createWorkout(workout);
+		if (newWorkout) {
+			setWorkouts([...workouts, newWorkout]);
+		}
+	};
 
 	return (
 		<View>
@@ -27,8 +35,16 @@ export default function WorkoutScreen() {
 				<Text>Loading...</Text>
 			) : (
 				<View>
+					<Pressable>
+						<Button
+							onPress={addWorkout}
+							title="Add Workout"
+						/>
+					</Pressable>
 					{workouts.map((workout) => (
-						<Text key={workout.id}>{workout.name}</Text>
+						<Text key={workout.workoutID}>
+							{workout.name}, {workout.description}
+						</Text>
 					))}
 				</View>
 			)}

@@ -1,7 +1,7 @@
 import ApiClient from "@/services/ApiClient";
 
 export type Workout = {
-	id?: string;
+	workoutID?: string;
 	userId: string;
 	name: string;
 	description?: string;
@@ -33,7 +33,7 @@ export const getWorkout = async (id: string) => {
 
 export const createWorkout = async (workout: WorkoutRequest) => {
 	try {
-		return await ApiClient.post<Workout>(endpoint, { body: JSON.stringify(workout) });
+		return await ApiClient.post<Workout>(endpoint, JSON.stringify(workout));
 	} catch (error) {
 		console.error(error);
 	}
@@ -41,7 +41,7 @@ export const createWorkout = async (workout: WorkoutRequest) => {
 
 export const updateWorkout = async (workoutId: string, workout: WorkoutRequest) => {
 	try {
-		return await ApiClient.put<Workout>(`${endpoint}/${workoutId}`, { body: JSON.stringify(workout) });
+		return await ApiClient.put<Workout>(`${endpoint}/${workoutId}`, JSON.stringify(workout));
 	} catch (error) {
 		console.error(error);
 	}
