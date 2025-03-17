@@ -1,6 +1,6 @@
 import ApiClient from "@/services/ApiClient";
 
-type Workout = {
+export type Workout = {
 	id?: string;
 	userId: string;
 	name: string;
@@ -8,7 +8,7 @@ type Workout = {
 	createdAt?: string;
 	updatedAt?: string;
 };
-type WorkoutRequest = {
+export type WorkoutRequest = {
 	name: string;
 	description: string;
 };

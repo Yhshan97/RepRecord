@@ -1,11 +1,11 @@
-import { Image, StyleSheet, Platform, TouchableOpacity } from "react-native";
+import { StyleSheet, Platform, TouchableOpacity } from "react-native";
 import { HelloWave } from "@/components/HelloWave";
 import ParallaxScrollView from "@/components/ParallaxScrollView";
 import { ThemedText } from "@/components/ThemedText";
 import { ThemedView } from "@/components/ThemedView";
 import { useContext } from "react";
-// import { storage, STORAGE_KEYS } from "@/helpers/storage";
 import { AuthContext } from "@/context/AuthContext";
+import { router } from "expo-router";
 
 export default function HomeScreen() {
 	const authContext = useContext(AuthContext);
@@ -25,6 +25,16 @@ export default function HomeScreen() {
 			</ThemedView>
 			<ThemedView style={styles.stepContainer}>
 				<ThemedText type="subtitle">Step 1: Try it </ThemedText>
+				<TouchableOpacity
+					style={styles.workoutButton}
+						onPress={() => {
+							router.navigate("/workout");
+						}}
+					>
+						
+
+					<ThemedText style={styles.buttonText}>Workouts page</ThemedText>
+				</TouchableOpacity>
 				<ThemedText>
 					Edit <ThemedText type="defaultSemiBold">app/(tabs)/HomeScreen.tsx</ThemedText> to see changes. Press{" "}
 					<ThemedText type="defaultSemiBold">
@@ -89,10 +99,17 @@ const styles = StyleSheet.create({
 		fontWeight: "bold",
 	},
 	logoutButton: {
-		backgroundColor: "red", // Use your theme color
+		backgroundColor: "red",
 		padding: 15,
 		borderRadius: 8,
 		alignItems: "center",
 		marginTop: 10,
 	},
+	workoutButton: {
+		backgroundColor: "green",
+		padding: 15,
+		borderRadius: 8,
+		alignItems: "center",
+		marginTop: 10,
+	}
 });
