@@ -1,4 +1,4 @@
-import { View, Text, StyleSheet, ScrollView, TouchableOpacity } from "react-native";
+import { View, Text, StyleSheet, ScrollView, TouchableOpacity, SafeAreaView } from "react-native";
 import { useEffect, useState } from "react";
 import {
 	createWorkout,
@@ -118,7 +118,7 @@ export default function WorkoutScreen() {
 	);
 
 	return (
-		<View style={styles.container}>
+		<SafeAreaView style={styles.container}>
 			<View>{createWorkoutModal}</View>
 			<View>{deleteWorkoutModal}</View>
 			<ScrollView style={styles.scrollView}>
@@ -127,7 +127,6 @@ export default function WorkoutScreen() {
 						key={workout.workoutID}
 						onPress={() => {}}
 						onDelete={() => {
-							console.log("delete");
 							setDeleteModalVisible(true);
 							setSelectedWorkout(workout);
 						}}
@@ -139,14 +138,14 @@ export default function WorkoutScreen() {
 			</ScrollView>
 			<View style={styles.buttonContainer}>
 				<TouchableOpacity
-					activeOpacity={0.5}
+					activeOpacity={0.8}
 					style={styles.button}
 					onPress={() => setCreateModalVisible(true)}
 				>
 					<Text style={{ color: "white" }}>ADD</Text>
 				</TouchableOpacity>
 			</View>
-		</View>
+		</SafeAreaView>
 	);
 }
 

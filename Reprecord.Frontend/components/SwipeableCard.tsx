@@ -1,7 +1,8 @@
-import React, { useCallback } from "react";
-import { StyleSheet, TouchableOpacity, Text } from "react-native";
+import React from "react";
+import { StyleSheet, Text, TouchableOpacity } from "react-native";
 import Swipeable from "react-native-gesture-handler/ReanimatedSwipeable";
 import Card from "./Card";
+import { Pressable } from "react-native-gesture-handler";
 import Animated, { interpolate, SharedValue, useAnimatedStyle } from "react-native-reanimated";
 
 type Props = {
@@ -13,18 +14,19 @@ type Props = {
 
 export default function SwipeableCard({ children, onPress, onLongPress, onDelete }: Props) {
 	const renderRightActions = (progress: SharedValue<number>) => {
-		// const animatedStyle = useAnimatedStyle(() => ({
-		// 	opacity: interpolate(progress.value, [0, 1], [0, 1]),
-		// }));
+		const animatedStyle = useAnimatedStyle(() => ({
+			opacity: interpolate(progress.value, [0, 1], [0, 1]),
+		}));
 
 		return (
-			<Animated.View style={[styles.deleteButton]}>
-				<TouchableOpacity
+			<Animated.View style={[styles.deleteButton, animatedStyle]}>
+				<Pressable
 					onPress={onDelete}
+					hitSlop={20}
 					style={styles.deleteContainer}
 				>
 					<Text style={styles.deleteText}>X</Text>
-				</TouchableOpacity>
+				</Pressable>
 			</Animated.View>
 		);
 	};
@@ -33,7 +35,7 @@ export default function SwipeableCard({ children, onPress, onLongPress, onDelete
 		<Swipeable
 			renderRightActions={renderRightActions}
 			overshootRight={false}
-			friction={2}
+			friction={3}
 		>
 			<TouchableOpacity
 				activeOpacity={0.75}
@@ -51,7 +53,7 @@ const styles = StyleSheet.create({
 		backgroundColor: "red",
 		justifyContent: "center",
 		alignItems: "center",
-		width: 60,
+		width: 80,
 		marginVertical: 8,
 		marginRight: 16,
 		marginLeft: -16,
