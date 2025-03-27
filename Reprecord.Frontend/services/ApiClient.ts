@@ -41,12 +41,15 @@ class ApiClient {
 			...fetchOptions,
 			headers,
 		};
-
 		try {
 			const res = await fetch(url, config);
 
 			if (!res.ok) {
 				throw new Error(`ApiClient error (${res.status}): ${res.statusText}`);
+			}
+
+			if (res.status === 204) {
+				return {} as T;
 			}
 			return await res.json();
 		} catch (err) {

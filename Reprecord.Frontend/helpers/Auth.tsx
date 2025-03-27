@@ -14,8 +14,8 @@ const APIbaseURL = process.env.EXPO_PUBLIC_API_BASE_URL;
 export const validateUserToken = async () => {
 	const user = await getUserSelf();
 	if (user) {
-		storage.setItem(STORAGE_KEYS.USER_ID, user.id);
-		storage.setItem(STORAGE_KEYS.USER_NAME, user.name);
+		await storage.setItem(STORAGE_KEYS.USER_ID, user.id);
+		await storage.setItem(STORAGE_KEYS.USER_NAME, user.name);
 	} else {
 		await storage.clearAllAsync();
 	}
@@ -29,10 +29,10 @@ export const handleLoginPress = async (): Promise<boolean> => {
 			const authCode = extractAuthCode(result.url);
 			return await fetch(`${APIbaseURL}/auth/callback?code=${authCode}`)
 				.then(res => res.json())
-				.then(data => {
-					storage.setItem(STORAGE_KEYS.ACCESS_TOKEN, data.access_token);
-					storage.setItem(STORAGE_KEYS.REFRESH_TOKEN, data.refresh_token);
-					validateUserToken();
+				.then(async data => {
+					await storage.setItem(STORAGE_KEYS.ACCESS_TOKEN, data.access_token);
+					await storage.setItem(STORAGE_KEYS.REFRESH_TOKEN, data.refresh_token);
+					await validateUserToken();
 					return true;
 				})
 		} else {

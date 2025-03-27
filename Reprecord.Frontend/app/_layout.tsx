@@ -8,6 +8,7 @@ import "react-native-reanimated";
 
 import { useColorScheme } from "@/hooks/useColorScheme";
 import { AuthProvider } from "@/context/AuthContext";
+import { GestureHandlerRootView } from "react-native-gesture-handler";
 
 // Prevent the splash screen from auto-hiding before asset loading is complete.
 SplashScreen.preventAutoHideAsync();
@@ -31,18 +32,20 @@ export default function RootLayout() {
 	return (
 		<ThemeProvider value={colorScheme === "dark" ? DarkTheme : DefaultTheme}>
 			<AuthProvider>
-				<Stack>
-					<Stack.Screen
-						name="login"
-						options={{ title: "Login", headerShown: false }}
-					/>
-					<Stack.Screen
-						name="(tabs)"
-						options={{ headerLeft: () => null, headerTitle: "Main menu" }}
-					/>
-					<Stack.Screen name="+not-found" />
-				</Stack>
-				<StatusBar style="auto" />
+				<GestureHandlerRootView>
+					<Stack>
+						<Stack.Screen
+							name="login"
+							options={{ title: "Login", headerShown: false }}
+						/>
+						<Stack.Screen
+							name="(tabs)"
+							options={{ headerLeft: () => null, headerTitle: "Main menu" }}
+						/>
+						<Stack.Screen name="+not-found" />
+					</Stack>
+					<StatusBar style="auto" />
+				</GestureHandlerRootView>
 			</AuthProvider>
 		</ThemeProvider>
 	);

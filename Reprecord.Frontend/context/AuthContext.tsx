@@ -19,7 +19,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
 	useEffect(() => {
 		const checkToken = async () => {
 			await validateUserToken();
-			const storedToken = storage.getItem(STORAGE_KEYS.ACCESS_TOKEN);
+			const storedToken = await storage.getItem(STORAGE_KEYS.ACCESS_TOKEN);
 			setIsLogged(!!storedToken);
 			setIsLoading(false);
 		};
