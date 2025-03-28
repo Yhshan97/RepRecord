@@ -43,6 +43,10 @@ export default function RootLayout() {
 							options={{ headerLeft: () => null, headerTitle: "Main menu" }}
 						/>
 						<Stack.Screen name="+not-found" />
+						<Stack.Screen
+							name="workout/index"
+							options={{ title: "Workouts", headerTitle: "My Workouts" }}
+						/>
 					</Stack>
 					<StatusBar style="auto" />
 				</GestureHandlerRootView>

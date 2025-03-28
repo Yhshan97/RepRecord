@@ -1,9 +1,9 @@
 import React from "react";
-import { StyleSheet, Text, TouchableOpacity } from "react-native";
+import { StyleSheet, TouchableOpacity } from "react-native";
 import Swipeable from "react-native-gesture-handler/ReanimatedSwipeable";
 import Card from "./Card";
-import { Pressable } from "react-native-gesture-handler";
 import Animated, { interpolate, SharedValue, useAnimatedStyle } from "react-native-reanimated";
+import { IconSymbol } from "@/components/ui/IconSymbol";
 
 type Props = {
 	children: React.ReactNode;
@@ -20,13 +20,16 @@ export default function SwipeableCard({ children, onPress, onLongPress, onDelete
 
 		return (
 			<Animated.View style={[styles.deleteButton, animatedStyle]}>
-				<Pressable
+				<TouchableOpacity
+					activeOpacity={0.8}
 					onPress={onDelete}
-					hitSlop={20}
 					style={styles.deleteContainer}
 				>
-					<Text style={styles.deleteText}>X</Text>
-				</Pressable>
+					<IconSymbol
+						name="trash"
+						color="white"
+					/>
+				</TouchableOpacity>
 			</Animated.View>
 		);
 	};

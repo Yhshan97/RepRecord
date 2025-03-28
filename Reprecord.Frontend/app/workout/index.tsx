@@ -11,6 +11,7 @@ import Modal from "@/components/Modal";
 import { ThemedText } from "@/components/ThemedText";
 import { ThemedTextInput } from "@/components/ThemedTextInput";
 import SwipeableCard from "@/components/SwipeableCard";
+import { IconSymbol } from "@/components/ui/IconSymbol";
 
 export default function WorkoutScreen() {
 	const [workouts, setWorkouts] = useState([] as Workout[]);
@@ -119,8 +120,10 @@ export default function WorkoutScreen() {
 
 	return (
 		<SafeAreaView style={styles.container}>
-			<View>{createWorkoutModal}</View>
-			<View>{deleteWorkoutModal}</View>
+			<View>
+				{createWorkoutModal}
+				{deleteWorkoutModal}
+			</View>
 			<ScrollView style={styles.scrollView}>
 				{workouts.map((workout) => (
 					<SwipeableCard
@@ -142,7 +145,10 @@ export default function WorkoutScreen() {
 					style={styles.button}
 					onPress={() => setCreateModalVisible(true)}
 				>
-					<Text style={{ color: "white" }}>ADD</Text>
+					<IconSymbol
+						name="plus"
+						color={"white"}
+					/>
 				</TouchableOpacity>
 			</View>
 		</SafeAreaView>
@@ -152,11 +158,9 @@ export default function WorkoutScreen() {
 const styles = StyleSheet.create({
 	container: {
 		flex: 0.9,
-		// height: "100%",
 	},
 	scrollView: {
 		flex: 1,
-		// marginTop: 20,
 	},
 	buttonContainer: {
 		position: "absolute",
