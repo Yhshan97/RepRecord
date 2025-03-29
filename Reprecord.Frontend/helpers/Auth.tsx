@@ -28,15 +28,15 @@ export const handleLoginPress = async (): Promise<boolean> => {
 		if (result.type === "success" && result.url) {
 			const authCode = extractAuthCode(result.url);
 			return await fetch(`${APIbaseURL}/auth/callback?code=${authCode}`)
-				.then(res => res.json())
-				.then(async data => {
+				.then((res) => res.json())
+				.then(async (data) => {
 					await storage.setItem(STORAGE_KEYS.ACCESS_TOKEN, data.access_token);
 					await storage.setItem(STORAGE_KEYS.REFRESH_TOKEN, data.refresh_token);
 					await validateUserToken();
 					return true;
-				})
+				});
 		} else {
-			console.log("Authentication canceled or failed");
+			console.error("Authentication canceled or failed");
 		}
 	} catch (error) {
 		console.error("Failed to open browser:", error);
@@ -46,7 +46,7 @@ export const handleLoginPress = async (): Promise<boolean> => {
 
 export const handleLogoutPress = async (): Promise<boolean> => {
 	return await fetch(logoutURL)
-		.then(async res => {
+		.then(async (res) => {
 			if (res.ok) {
 				await storage.clearAllAsync();
 				return true;
@@ -54,7 +54,7 @@ export const handleLogoutPress = async (): Promise<boolean> => {
 				throw new Error("Failed to logout: " + res.statusText);
 			}
 		})
-		.catch(error => {
+		.catch((error) => {
 			console.error(error);
 			return false;
 		});

@@ -69,9 +69,10 @@ describe("WorkoutController", () => {
 
 		const res = await createWorkout(mockWorkoutRequest);
 
-		expect(ApiClient.post).toHaveBeenCalledWith(`${process.env.EXPO_PUBLIC_API_BASE_URL}/workout-plans`, {
-			body: JSON.stringify(mockWorkoutRequest),
-		});
+		expect(ApiClient.post).toHaveBeenCalledWith(
+			`${process.env.EXPO_PUBLIC_API_BASE_URL}/workout-plans`,
+			JSON.stringify(mockWorkoutRequest)
+		);
 		expect(res).toEqual(mockWorkout);
 	});
 
@@ -81,9 +82,10 @@ describe("WorkoutController", () => {
 
 		const res = await createWorkout(mockWorkoutRequest);
 
-		expect(ApiClient.post).toHaveBeenCalledWith(`${process.env.EXPO_PUBLIC_API_BASE_URL}/workout-plans`, {
-			body: JSON.stringify(mockWorkoutRequest),
-		});
+		expect(ApiClient.post).toHaveBeenCalledWith(
+			`${process.env.EXPO_PUBLIC_API_BASE_URL}/workout-plans`,
+			JSON.stringify(mockWorkoutRequest)
+		);
 		expect(spy).toHaveBeenCalledWith(new Error("test error"));
 		expect(res).toBeUndefined();
 
@@ -95,9 +97,10 @@ describe("WorkoutController", () => {
 
 		const res = await updateWorkout("1", mockWorkoutRequest);
 
-		expect(ApiClient.put).toHaveBeenCalledWith(`${process.env.EXPO_PUBLIC_API_BASE_URL}/workout-plans/1`, {
-			body: JSON.stringify(mockWorkoutRequest),
-		});
+		expect(ApiClient.put).toHaveBeenCalledWith(
+			`${process.env.EXPO_PUBLIC_API_BASE_URL}/workout-plans/1`,
+			JSON.stringify(mockWorkoutRequest)
+		);
 		expect(res).toEqual(mockWorkout);
 	});
 
@@ -107,9 +110,10 @@ describe("WorkoutController", () => {
 
 		const res = await updateWorkout("1", mockWorkoutRequest);
 
-		expect(ApiClient.put).toHaveBeenCalledWith(`${process.env.EXPO_PUBLIC_API_BASE_URL}/workout-plans/1`, {
-			body: JSON.stringify(mockWorkoutRequest),
-		});
+		expect(ApiClient.put).toHaveBeenCalledWith(
+			`${process.env.EXPO_PUBLIC_API_BASE_URL}/workout-plans/1`,
+			JSON.stringify(mockWorkoutRequest)
+		);
 		expect(spy).toHaveBeenCalledWith(new Error("test error"));
 		expect(res).toBeUndefined();
 

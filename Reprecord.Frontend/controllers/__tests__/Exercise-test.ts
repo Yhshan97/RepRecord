@@ -48,9 +48,10 @@ describe("ExerciseController", () => {
 
 		const res = await createWorkoutExercise("1", mockExerciseRequest);
 
-		expect(ApiClient.post).toHaveBeenCalledWith(`${process.env.EXPO_PUBLIC_API_BASE_URL}/workout-plans/1/exercises`, {
-			body: JSON.stringify(mockExerciseRequest),
-		});
+		expect(ApiClient.post).toHaveBeenCalledWith(
+			`${process.env.EXPO_PUBLIC_API_BASE_URL}/workout-plans/1/exercises`,
+			JSON.stringify(mockExerciseRequest)
+		);
 		expect(res).toEqual(mockExercise);
 	});
 
@@ -60,9 +61,10 @@ describe("ExerciseController", () => {
 
 		const res = await createWorkoutExercise("1", mockExerciseRequest);
 
-		expect(ApiClient.post).toHaveBeenCalledWith(`${process.env.EXPO_PUBLIC_API_BASE_URL}/workout-plans/1/exercises`, {
-			body: JSON.stringify(mockExerciseRequest),
-		});
+		expect(ApiClient.post).toHaveBeenCalledWith(
+			`${process.env.EXPO_PUBLIC_API_BASE_URL}/workout-plans/1/exercises`,
+			JSON.stringify(mockExerciseRequest)
+		);
 		expect(spy).toHaveBeenCalledWith(new Error("test error"));
 		expect(res).toBeUndefined();
 
@@ -74,9 +76,10 @@ describe("ExerciseController", () => {
 
 		const res = await updateExercise("2", mockExerciseRequest);
 
-		expect(ApiClient.put).toHaveBeenCalledWith(`${process.env.EXPO_PUBLIC_API_BASE_URL}/exercises/2`, {
-			body: JSON.stringify(mockExerciseRequest),
-		});
+		expect(ApiClient.put).toHaveBeenCalledWith(
+			`${process.env.EXPO_PUBLIC_API_BASE_URL}/exercises/2`,
+			JSON.stringify(mockExerciseRequest)
+		);
 		expect(res).toEqual(mockExercise);
 	});
 
@@ -86,9 +89,10 @@ describe("ExerciseController", () => {
 
 		const res = await updateExercise("2", mockExerciseRequest);
 
-		expect(ApiClient.put).toHaveBeenCalledWith(`${process.env.EXPO_PUBLIC_API_BASE_URL}/exercises/2`, {
-			body: JSON.stringify(mockExerciseRequest),
-		});
+		expect(ApiClient.put).toHaveBeenCalledWith(
+			`${process.env.EXPO_PUBLIC_API_BASE_URL}/exercises/2`,
+			JSON.stringify(mockExerciseRequest)
+		);
 		expect(spy).toHaveBeenCalledWith(new Error("test error"));
 		expect(res).toBeUndefined();
 
