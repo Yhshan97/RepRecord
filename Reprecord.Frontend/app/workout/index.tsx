@@ -12,8 +12,11 @@ import { ThemedText } from "@/components/ThemedText";
 import { ThemedTextInput } from "@/components/ThemedTextInput";
 import SwipeableCard from "@/components/SwipeableCard";
 import { IconSymbol } from "@/components/ui/IconSymbol";
+import { useRouter } from "expo-router";
+import { GestureHandlerRootView } from "react-native-gesture-handler";
 
 export default function WorkoutScreen() {
+	const router = useRouter();
 	const [workouts, setWorkouts] = useState([] as Workout[]);
 	const [createModalVisible, setCreateModalVisible] = useState(false);
 	const [deleteModalVisible, setDeleteModalVisible] = useState(false);
@@ -125,19 +128,21 @@ export default function WorkoutScreen() {
 				{deleteWorkoutModal}
 			</View>
 			<ScrollView style={styles.scrollView}>
-				{workouts.map((workout) => (
-					<SwipeableCard
-						key={workout.workoutID}
-						onPress={() => {}}
-						onDelete={() => {
-							setDeleteModalVisible(true);
-							setSelectedWorkout(workout);
-						}}
-					>
-						<ThemedText style={styles.cardTitle}>{workout.name}</ThemedText>
-						<ThemedText style={styles.descriptionText}>{workout.description}</ThemedText>
-					</SwipeableCard>
-				))}
+				<GestureHandlerRootView>
+					{workouts.map((workout) => (
+						<SwipeableCard
+							key={workout.workoutID}
+							onPress={() => router.navigate(`/workout/${workout.workoutID}`)}
+							onDelete={() => {
+								setDeleteModalVisible(true);
+								setSelectedWorkout(workout);
+							}}
+						>
+							<ThemedText style={styles.cardTitle}>{workout.name}</ThemedText>
+							<ThemedText style={styles.descriptionText}>{workout.description}</ThemedText>
+						</SwipeableCard>
+					))}
+				</GestureHandlerRootView>
 			</ScrollView>
 			<View style={styles.buttonContainer}>
 				<TouchableOpacity

@@ -41,7 +41,7 @@ export default function SwipeableCard({ children, onPress, onLongPress, onDelete
 			friction={3}
 		>
 			<TouchableOpacity
-				activeOpacity={0.75}
+				activeOpacity={0.85}
 				onPress={onPress}
 				onLongPress={onLongPress}
 			>

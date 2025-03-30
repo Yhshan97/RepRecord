@@ -1,12 +1,12 @@
 import ApiClient from "@/services/ApiClient";
 
-type Exercise = {
-	id?: string;
+export type Exercise = {
+	exerciseID?: string;
 	workoutID: string;
 	name: string;
 	description?: string;
 };
-type ExerciseRequest = {
+export type ExerciseRequest = {
 	name: string;
 	description: string;
 };
@@ -40,6 +40,7 @@ export const updateExercise = async (exerciseId: string, exercise: ExerciseReque
 
 export const deleteExercise = async (exerciseId: string) => {
 	try {
+		console.log(`Deleting exercise with ID: ${exerciseId}`);
 		return await ApiClient.delete<any>(`${endpoint}/${exerciseId}`);
 	} catch (error) {
 		console.error(error);

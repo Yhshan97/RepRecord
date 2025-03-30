@@ -8,7 +8,7 @@ import "react-native-reanimated";
 
 import { useColorScheme } from "@/hooks/useColorScheme";
 import { AuthProvider } from "@/context/AuthContext";
-import { GestureHandlerRootView } from "react-native-gesture-handler";
+import { SafeAreaProvider } from "react-native-safe-area-context";
 
 // Prevent the splash screen from auto-hiding before asset loading is complete.
 SplashScreen.preventAutoHideAsync();
@@ -30,9 +30,9 @@ export default function RootLayout() {
 	}
 
 	return (
-		<ThemeProvider value={colorScheme === "dark" ? DarkTheme : DefaultTheme}>
-			<AuthProvider>
-				<GestureHandlerRootView>
+		<SafeAreaProvider>
+			<ThemeProvider value={colorScheme === "dark" ? DarkTheme : DefaultTheme}>
+				<AuthProvider>
 					<Stack>
 						<Stack.Screen
 							name="login"
@@ -47,10 +47,14 @@ export default function RootLayout() {
 							name="workout/index"
 							options={{ title: "Workouts", headerTitle: "My Workouts" }}
 						/>
+						<Stack.Screen
+							name="workout/[id]"
+							options={{ title: "Single Workout", headerTitle: "Exercises" }}
+						/>
 					</Stack>
 					<StatusBar style="auto" />
-				</GestureHandlerRootView>
-			</AuthProvider>
-		</ThemeProvider>
+				</AuthProvider>
+			</ThemeProvider>
+		</SafeAreaProvider>
 	);
 }
