@@ -5,17 +5,17 @@ import {
 	ExerciseRequest,
 	deleteExercise,
 } from "@/controllers/ExerciseController";
-import { getWorkout, Workout } from "@/controllers/WorkoutController";
-import { useLocalSearchParams } from "expo-router";
-import { useEffect, useState } from "react";
-import { View, Text, StyleSheet, ScrollView, TouchableOpacity } from "react-native";
 import Modal from "@/components/Modal";
-import { SafeAreaView } from "react-native-safe-area-context";
+import { useEffect, useState } from "react";
+import { useLocalSearchParams } from "expo-router";
 import { ThemedText } from "@/components/ThemedText";
-import { IconSymbol } from "@/components/ui/IconSymbol";
 import SwipeableCard from "@/components/SwipeableCard";
-import { GestureHandlerRootView } from "react-native-gesture-handler";
+import { IconSymbol } from "@/components/ui/IconSymbol";
 import { ThemedTextInput } from "@/components/ThemedTextInput";
+import { SafeAreaView } from "react-native-safe-area-context";
+import { getWorkout, updateWorkout, Workout, WorkoutRequest } from "@/controllers/WorkoutController";
+import { Pressable } from "react-native-gesture-handler";
+import { View, Text, StyleSheet, ScrollView, TouchableOpacity } from "react-native";
 
 export default function WorkoutDetailsScreen() {
 	const { id } = useLocalSearchParams();
@@ -27,11 +27,16 @@ export default function WorkoutDetailsScreen() {
 	const [selectedExercise, setSelectedExercise] = useState(null as Exercise | null);
 	const [exerciseName, setExerciseName] = useState("");
 	const [exerciseDescription, setExerciseDescription] = useState("");
+	const [updateWorkoutName, setUpdateWorkoutName] = useState(workoutDetails.name);
+	const [updateWorkoutDescription, setUpdateWorkoutDescription] = useState(workoutDetails.description || "");
+	const [updateWorkoutModalVisible, setUpdateWorkoutModalVisible] = useState(false);
 
 	useEffect(() => {
 		const fetchWorkoutDetails = async () => {
 			const workout = await getWorkout(id as string);
 			setWorkoutDetails(workout ?? ({} as Workout));
+			setUpdateWorkoutName(workout?.name || "");
+			setUpdateWorkoutDescription(workout?.description || "");
 		};
 
 		const fetchWorkoutExercises = async () => {
@@ -83,6 +88,55 @@ export default function WorkoutDetailsScreen() {
 		setCreateModalVisible(false);
 	};
 
+	const handleUpdateModalCancel = () => {
+		setUpdateWorkoutModalVisible(false);
+		setUpdateWorkoutName(workoutDetails.name);
+		setUpdateWorkoutDescription(workoutDetails.description || "");
+	};
+
+	const handleUpdateWorkout = async () => {
+		setUpdateWorkoutModalVisible(false);
+		const changedWorkout: WorkoutRequest = {
+			name: updateWorkoutName,
+			description: updateWorkoutDescription,
+		};
+		const updatedWorkout = await updateWorkout(id as string, changedWorkout);
+		if (updatedWorkout) {
+			setWorkoutDetails(updatedWorkout);
+			setUpdateWorkoutName(updatedWorkout.name);
+			setUpdateWorkoutDescription(updatedWorkout.description || "");
+		}
+	};
+
+	const updateWorkoutModal = (
+		<Modal
+			visible={updateWorkoutModalVisible}
+			presentationStyle="overFullScreen"
+			onRequestClose={() => handleUpdateModalCancel()}
+			onModalCancel={() => handleUpdateModalCancel()}
+			onModalConfirm={() => handleUpdateWorkout()}
+		>
+			<View style={styles.modalContent}>
+				<ThemedText style={styles.modalTitle}>Update Workout</ThemedText>
+				<ThemedTextInput
+					placeholder="Exercise Name"
+					style={[styles.input]}
+					maxLength={100}
+					value={updateWorkoutName}
+					onChangeText={(text) => setUpdateWorkoutName(text)}
+				/>
+				<ThemedTextInput
+					placeholder="Description (optional)"
+					style={[styles.input, styles.multilineInput]}
+					multiline={true}
+					numberOfLines={4}
+					value={updateWorkoutDescription}
+					onChangeText={(text) => setUpdateWorkoutDescription(text)}
+				/>
+			</View>
+		</Modal>
+	);
+
 	const createExerciseModal = (
 		<Modal
 			visible={createModalVisible}
@@ -132,33 +186,45 @@ export default function WorkoutDetailsScreen() {
 	);
 
 	return (
-		<SafeAreaView style={styles.container}>
+		<SafeAreaView
+			style={styles.container}
+			edges={["left", "right"]}
+		>
 			<View>
 				{createExerciseModal}
 				{deleteExerciseModal}
+				{updateWorkoutModal}
 			</View>
-			<View style={styles.workoutDetails}>
-				<ThemedText style={styles.workoutTitle}>{workoutDetails.name}</ThemedText>
-				<ThemedText style={styles.workoutDescription}>{workoutDetails.description}</ThemedText>
-				<ThemedText style={styles.workoutMeta}>Created at: {workoutDetails.createdAt}</ThemedText>
-				<ThemedText style={styles.workoutMeta}>Updated at: {workoutDetails.updatedAt}</ThemedText>
+			<View style={styles.titleContainer}>
+				<View>
+					<ThemedText style={styles.workoutTitle}>{workoutDetails.name}</ThemedText>
+					<ThemedText style={styles.workoutDescription}>{workoutDetails.description}</ThemedText>
+					<ThemedText style={styles.workoutMeta}>Last Updated: {workoutDetails.updatedAt?.split("T")[0]}</ThemedText>
+				</View>
+				<Pressable onPress={() => setUpdateWorkoutModalVisible(true)}>
+					<IconSymbol
+						name="pencil"
+						color={"black"}
+						size={20}
+					/>
+				</Pressable>
 			</View>
+
+			{/* List of exercises*/}
 			<ScrollView style={styles.scrollView}>
-				<GestureHandlerRootView>
-					{exercises.map((exercise) => (
-						<SwipeableCard
-							key={exercise.exerciseID}
-							onPress={() => {}}
-							onDelete={() => {
-								setDeleteModalVisible(true);
-								setSelectedExercise(exercise);
-							}}
-						>
-							<ThemedText style={styles.exerciseTitle}>{exercise.name}</ThemedText>
-							<ThemedText style={styles.exerciseDescription}>{exercise.description}</ThemedText>
-						</SwipeableCard>
-					))}
-				</GestureHandlerRootView>
+				{exercises.map((exercise) => (
+					<SwipeableCard
+						key={exercise.exerciseID}
+						onPress={() => {}}
+						onDelete={() => {
+							setDeleteModalVisible(true);
+							setSelectedExercise(exercise);
+						}}
+					>
+						<ThemedText style={styles.exerciseTitle}>{exercise.name}</ThemedText>
+						<ThemedText style={styles.exerciseDescription}>{exercise.description}</ThemedText>
+					</SwipeableCard>
+				))}
 			</ScrollView>
 			<View style={styles.buttonContainer}>
 				<TouchableOpacity
@@ -179,12 +245,11 @@ export default function WorkoutDetailsScreen() {
 const styles = StyleSheet.create({
 	container: {
 		flex: 0.9,
+		paddingVertical: 10,
 	},
 	workoutDetails: {
-		padding: 20,
-		backgroundColor: "#f5f5f5",
-		borderBottomWidth: 1,
-		borderBottomColor: "#ddd",
+		paddingHorizontal: 20,
+		paddingBottom: 20,
 	},
 	workoutTitle: {
 		fontSize: 24,
@@ -196,12 +261,15 @@ const styles = StyleSheet.create({
 		opacity: 0.8,
 	},
 	workoutMeta: {
-		fontSize: 12,
+		fontSize: 10,
 		color: "gray",
 	},
 	scrollView: {
 		flex: 1,
-		padding: 10,
+		// padding: 10,
+		borderTopWidth: 0.5,
+		borderTopColor: "#aca9a9",
+		// marginHorizontal: 15,
 	},
 	addCard: {
 		backgroundColor: "#dddddd",
@@ -266,5 +334,17 @@ const styles = StyleSheet.create({
 		fontSize: 12,
 		lineHeight: 16,
 		maxHeight: 75,
+	},
+	titleContainer: {
+		flexDirection: "row",
+		justifyContent: "space-between",
+		alignItems: "center",
+		padding: 10,
+		borderRadius: 5,
+		backgroundColor: "white",
+		marginHorizontal: 5,
+		borderColor: "#ddd",
+		borderWidth: 1,
+		marginBottom: 10,
 	},
 });

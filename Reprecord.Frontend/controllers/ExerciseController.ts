@@ -40,7 +40,6 @@ export const updateExercise = async (exerciseId: string, exercise: ExerciseReque
 
 export const deleteExercise = async (exerciseId: string) => {
 	try {
-		console.log(`Deleting exercise with ID: ${exerciseId}`);
 		return await ApiClient.delete<any>(`${endpoint}/${exerciseId}`);
 	} catch (error) {
 		console.error(error);

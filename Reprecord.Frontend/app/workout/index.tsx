@@ -128,7 +128,7 @@ export default function WorkoutScreen() {
 				{deleteWorkoutModal}
 			</View>
 			<ScrollView style={styles.scrollView}>
-				<GestureHandlerRootView>
+				
 					{workouts.map((workout) => (
 						<SwipeableCard
 							key={workout.workoutID}
@@ -142,7 +142,6 @@ export default function WorkoutScreen() {
 							<ThemedText style={styles.descriptionText}>{workout.description}</ThemedText>
 						</SwipeableCard>
 					))}
-				</GestureHandlerRootView>
 			</ScrollView>
 			<View style={styles.buttonContainer}>
 				<TouchableOpacity
