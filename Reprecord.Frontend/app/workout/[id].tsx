@@ -15,7 +15,7 @@ import { ThemedTextInput } from "@/components/ThemedTextInput";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { getWorkout, updateWorkout, Workout, WorkoutRequest } from "@/controllers/WorkoutController";
 import { Pressable } from "react-native-gesture-handler";
-import { View, Text, StyleSheet, ScrollView, TouchableOpacity } from "react-native";
+import { View, Text, StyleSheet, ScrollView, TouchableOpacity, RefreshControl } from "react-native";
 
 export default function WorkoutDetailsScreen() {
 	const { id } = useLocalSearchParams();
@@ -30,6 +30,13 @@ export default function WorkoutDetailsScreen() {
 	const [updateWorkoutName, setUpdateWorkoutName] = useState(workoutDetails.name);
 	const [updateWorkoutDescription, setUpdateWorkoutDescription] = useState(workoutDetails.description || "");
 	const [updateWorkoutModalVisible, setUpdateWorkoutModalVisible] = useState(false);
+	const [lastRefresh, setLastRefresh] = useState(0);
+
+	const fetchWorkoutExercises = async () => {
+		let data = await getWorkoutExercises(id as string);
+		data = data?.sort((a, b) => a.name.localeCompare(b.name));
+		setExercises(data ?? []);
+	};
 
 	useEffect(() => {
 		const fetchWorkoutDetails = async () => {
@@ -37,11 +44,6 @@ export default function WorkoutDetailsScreen() {
 			setWorkoutDetails(workout ?? ({} as Workout));
 			setUpdateWorkoutName(workout?.name || "");
 			setUpdateWorkoutDescription(workout?.description || "");
-		};
-
-		const fetchWorkoutExercises = async () => {
-			const data = await getWorkoutExercises(id as string);
-			setExercises(data ?? []);
 		};
 
 		const fetchData = async () => {
@@ -52,6 +54,16 @@ export default function WorkoutDetailsScreen() {
 
 		fetchData();
 	}, [id]);
+
+	const handleRefresh = async () => {
+		const timestamp = new Date().getTime();
+		if (timestamp - lastRefresh < 30000) {
+			console.warn(`Please wait ${Math.round((30000 - (timestamp - lastRefresh)) / 1000)} more seconds.`);
+			return;
+		}
+		setLastRefresh(timestamp);
+		await fetchWorkoutExercises();
+	};
 
 	const handleCreateExercise = async () => {
 		setCreateModalVisible(false);
@@ -153,6 +165,7 @@ export default function WorkoutDetailsScreen() {
 					maxLength={100}
 					value={exerciseName}
 					onChangeText={(text) => setExerciseName(text)}
+					onSubmitEditing={() => handleCreateExercise()}
 				/>
 				<ThemedTextInput
 					placeholder="Description (optional)"
@@ -196,7 +209,7 @@ export default function WorkoutDetailsScreen() {
 				{updateWorkoutModal}
 			</View>
 			<View style={styles.titleContainer}>
-				<View>
+				<View style={{ flex: 0.9 }}>
 					<ThemedText style={styles.workoutTitle}>{workoutDetails.name}</ThemedText>
 					<ThemedText style={styles.workoutDescription}>{workoutDetails.description}</ThemedText>
 					<ThemedText style={styles.workoutMeta}>Last Updated: {workoutDetails.updatedAt?.split("T")[0]}</ThemedText>
@@ -204,14 +217,21 @@ export default function WorkoutDetailsScreen() {
 				<Pressable onPress={() => setUpdateWorkoutModalVisible(true)}>
 					<IconSymbol
 						name="pencil"
-						color={"black"}
-						size={20}
+						color={"grey"}
 					/>
 				</Pressable>
 			</View>
 
 			{/* List of exercises*/}
-			<ScrollView style={styles.scrollView}>
+			<ScrollView
+				style={styles.scrollView}
+				refreshControl={
+					<RefreshControl
+						refreshing={loading}
+						onRefresh={() => handleRefresh()}
+					/>
+				}
+			>
 				{exercises.map((exercise) => (
 					<SwipeableCard
 						key={exercise.exerciseID}
@@ -261,15 +281,13 @@ const styles = StyleSheet.create({
 		opacity: 0.8,
 	},
 	workoutMeta: {
-		fontSize: 10,
+		fontSize: 12,
 		color: "gray",
 	},
 	scrollView: {
 		flex: 1,
-		// padding: 10,
 		borderTopWidth: 0.5,
 		borderTopColor: "#aca9a9",
-		// marginHorizontal: 15,
 	},
 	addCard: {
 		backgroundColor: "#dddddd",
@@ -338,13 +356,10 @@ const styles = StyleSheet.create({
 	titleContainer: {
 		flexDirection: "row",
 		justifyContent: "space-between",
-		alignItems: "center",
+		alignItems: "flex-start",
 		padding: 10,
 		borderRadius: 5,
-		backgroundColor: "white",
 		marginHorizontal: 5,
-		borderColor: "#ddd",
-		borderWidth: 1,
 		marginBottom: 10,
 	},
 });

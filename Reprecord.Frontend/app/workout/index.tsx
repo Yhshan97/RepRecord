@@ -1,4 +1,4 @@
-import { View, Text, StyleSheet, ScrollView, TouchableOpacity, SafeAreaView } from "react-native";
+import { View, Text, StyleSheet, ScrollView, TouchableOpacity, SafeAreaView, RefreshControl } from "react-native";
 import { useEffect, useState } from "react";
 import {
 	createWorkout,
@@ -13,7 +13,6 @@ import { ThemedTextInput } from "@/components/ThemedTextInput";
 import SwipeableCard from "@/components/SwipeableCard";
 import { IconSymbol } from "@/components/ui/IconSymbol";
 import { useRouter } from "expo-router";
-import { GestureHandlerRootView } from "react-native-gesture-handler";
 
 export default function WorkoutScreen() {
 	const router = useRouter();
@@ -24,16 +23,28 @@ export default function WorkoutScreen() {
 	const [loading, setLoading] = useState(true);
 	const [workoutName, setWorkoutName] = useState("");
 	const [workoutDescription, setWorkoutDescription] = useState("");
+	const [lastRefresh, setLastRefresh] = useState(0);
+
+	const fetchWorkouts = async () => {
+		let data = await getUserWorkouts();
+		data = data?.sort((a, b) => a.name.localeCompare(b.name));
+		setWorkouts(data ?? []);
+		setLoading(false);
+	};
 
 	useEffect(() => {
-		const fetchWorkouts = async () => {
-			const data = await getUserWorkouts();
-			setWorkouts(data ?? []);
-			setLoading(false);
-		};
-
 		fetchWorkouts();
 	}, []);
+
+	const handleRefresh = async () => {
+		const timestamp = new Date().getTime();
+		if (timestamp - lastRefresh < 30000) {
+			console.warn(`Please wait ${Math.round((30000 - (timestamp - lastRefresh)) / 1000)} more seconds.`);
+			return;
+		}
+		setLastRefresh(timestamp);
+		await fetchWorkouts();
+	};
 
 	const handleModalCancel = () => {
 		setWorkoutName("");
@@ -49,7 +60,8 @@ export default function WorkoutScreen() {
 		};
 		const newWorkout = await createWorkout(workout);
 		if (newWorkout) {
-			setWorkouts([...workouts, newWorkout]);
+			const data = [...workouts, newWorkout].sort((a, b) => a.name.localeCompare(b.name));
+			setWorkouts(data);
 		}
 		setWorkoutName("");
 		setWorkoutDescription("");
@@ -127,9 +139,17 @@ export default function WorkoutScreen() {
 				{createWorkoutModal}
 				{deleteWorkoutModal}
 			</View>
-			<ScrollView style={styles.scrollView}>
-				
-					{workouts.map((workout) => (
+			<ScrollView
+				style={styles.scrollView}
+				refreshControl={
+					<RefreshControl
+						refreshing={loading}
+						onRefresh={handleRefresh}
+					/>
+				}
+			>
+				{workouts.length > 0 ? (
+					workouts.map((workout) => (
 						<SwipeableCard
 							key={workout.workoutID}
 							onPress={() => router.navigate(`/workout/${workout.workoutID}`)}
@@ -141,7 +161,10 @@ export default function WorkoutScreen() {
 							<ThemedText style={styles.cardTitle}>{workout.name}</ThemedText>
 							<ThemedText style={styles.descriptionText}>{workout.description}</ThemedText>
 						</SwipeableCard>
-					))}
+					))
+				) : (
+					<ThemedText style={styles.cardTitle}>No workouts found</ThemedText>
+				)}
 			</ScrollView>
 			<View style={styles.buttonContainer}>
 				<TouchableOpacity
