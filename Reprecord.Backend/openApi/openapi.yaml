@@ -480,7 +480,7 @@ components:
                 - name
                 - description
             properties:
-                id:
+                exerciseID:
                     type: string
                     format: uuid
                     readOnly: true
@@ -499,7 +499,7 @@ components:
                 - date
                 - sets
             properties:
-                id:
+                logID:
                     type: string
                     format: uuid
                     readOnly: true

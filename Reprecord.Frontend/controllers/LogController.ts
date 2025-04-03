@@ -1,19 +1,19 @@
 import ApiClient from "@/services/ApiClient";
 
-type Set = {
+export type Set = {
 	setNumber: number;
 	reps: number;
 	weight: number;
 };
 
-type Log = {
-	id?: string;
-	exerciseId: string;
+export type Log = {
+	logID?: string;
+	exerciseID: string;
 	date: string;
 	sets: Array<Set>;
 };
 
-type LogRequest = {
+export type LogRequest = {
 	date: string;
 	sets: Array<Set>;
 };

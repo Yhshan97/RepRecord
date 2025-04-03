@@ -152,7 +152,7 @@ export default function WorkoutScreen() {
 					workouts.map((workout) => (
 						<SwipeableCard
 							key={workout.workoutID}
-							onPress={() => router.navigate(`/workout/${workout.workoutID}`)}
+							onPress={() => router.navigate(`/workouts/${workout.workoutID}`)}
 							onDelete={() => {
 								setDeleteModalVisible(true);
 								setSelectedWorkout(workout);

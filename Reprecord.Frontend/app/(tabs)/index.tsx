@@ -27,12 +27,10 @@ export default function HomeScreen() {
 				<ThemedText type="subtitle">Step 1: Try it </ThemedText>
 				<TouchableOpacity
 					style={styles.workoutButton}
-						onPress={() => {
-							router.navigate("/workout");
-						}}
-					>
-						
-
+					onPress={() => {
+						router.navigate("/workouts");
+					}}
+				>
 					<ThemedText style={styles.buttonText}>Workouts page</ThemedText>
 				</TouchableOpacity>
 				<ThemedText>
@@ -56,7 +54,8 @@ export default function HomeScreen() {
 				<ThemedText>
 					When you're ready, run <ThemedText type="defaultSemiBold">npm run reset-project</ThemedText> to get a fresh{" "}
 					<ThemedText type="defaultSemiBold">app</ThemedText> directory. This will move the current{" "}
-					<ThemedText type="defaultSemiBold">app</ThemedText> to <ThemedText type="defaultSemiBold">app-example</ThemedText>.
+					<ThemedText type="defaultSemiBold">app</ThemedText> to{" "}
+					<ThemedText type="defaultSemiBold">app-example</ThemedText>.
 				</ThemedText>
 			</ThemedView>
 			<TouchableOpacity
@@ -111,5 +110,5 @@ const styles = StyleSheet.create({
 		borderRadius: 8,
 		alignItems: "center",
 		marginTop: 10,
-	}
+	},
 });

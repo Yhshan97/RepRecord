@@ -44,15 +44,19 @@ export default function RootLayout() {
 								name="(tabs)"
 								options={{ headerLeft: () => null, headerTitle: "Main menu" }}
 							/>
-							<Stack.Screen name="+not-found" />
 							<Stack.Screen
-								name="workout/index"
+								name="workouts/index"
 								options={{ title: "Workouts", headerTitle: "My Workouts" }}
 							/>
 							<Stack.Screen
-								name="workout/[id]"
-								options={{ title: "Single Workout", headerTitle: "Exercises" }}
+								name="workouts/[id]"
+								options={{ title: "Single Workout", headerTitle: "Workout" }}
 							/>
+							<Stack.Screen
+								name="exercises/[id]"
+								options={{ title: "Single Exercise", headerTitle: "Exercise" }}
+							/>
+							<Stack.Screen name="+not-found" />
 						</Stack>
 						<StatusBar style="auto" />
 					</AuthProvider>

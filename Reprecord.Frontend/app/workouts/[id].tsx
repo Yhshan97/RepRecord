@@ -7,7 +7,7 @@ import {
 } from "@/controllers/ExerciseController";
 import Modal from "@/components/Modal";
 import { useEffect, useState } from "react";
-import { useLocalSearchParams } from "expo-router";
+import { router, useLocalSearchParams } from "expo-router";
 import { ThemedText } from "@/components/ThemedText";
 import SwipeableCard from "@/components/SwipeableCard";
 import { IconSymbol } from "@/components/ui/IconSymbol";
@@ -235,7 +235,7 @@ export default function WorkoutDetailsScreen() {
 				{exercises.map((exercise) => (
 					<SwipeableCard
 						key={exercise.exerciseID}
-						onPress={() => {}}
+						onPress={() => router.navigate(`/exercises/${exercise.exerciseID}?workoutID=${id}`)}
 						onDelete={() => {
 							setDeleteModalVisible(true);
 							setSelectedExercise(exercise);
