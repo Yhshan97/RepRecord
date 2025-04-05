@@ -6,6 +6,7 @@ import { ThemedView } from "@/components/ThemedView";
 import { useContext } from "react";
 import { AuthContext } from "@/context/AuthContext";
 import { router } from "expo-router";
+import { SafeAreaView } from "react-native-safe-area-context";
 
 export default function HomeScreen() {
 	const authContext = useContext(AuthContext);
@@ -15,57 +16,62 @@ export default function HomeScreen() {
 	}
 
 	return (
-		<ParallaxScrollView
-			headerBackgroundColor={{ light: "#A1CEDC", dark: "#11242a" }}
-			headerImage={<></>}
+		<SafeAreaView
+			style={{ flex: 1 }}
+			edges={["top"]}
 		>
-			<ThemedView style={styles.titleContainer}>
-				<ThemedText type="title">Welcome, you are logged in!</ThemedText>
-				<HelloWave />
-			</ThemedView>
-			<ThemedView style={styles.stepContainer}>
-				<ThemedText type="subtitle">Step 1: Try it </ThemedText>
-				<TouchableOpacity
-					style={styles.workoutButton}
-					onPress={() => {
-						router.navigate("/workouts");
-					}}
-				>
-					<ThemedText style={styles.buttonText}>Workouts page</ThemedText>
-				</TouchableOpacity>
-				<ThemedText>
-					Edit <ThemedText type="defaultSemiBold">app/(tabs)/HomeScreen.tsx</ThemedText> to see changes. Press{" "}
-					<ThemedText type="defaultSemiBold">
-						{Platform.select({
-							ios: "cmd + d",
-							android: "cmd + m",
-							web: "F12",
-						})}
-					</ThemedText>{" "}
-					to open developer tools.
-				</ThemedText>
-			</ThemedView>
-			<ThemedView style={styles.stepContainer}>
-				<ThemedText type="subtitle">Step 2: Explore</ThemedText>
-				<ThemedText>{}</ThemedText>
-			</ThemedView>
-			<ThemedView style={styles.stepContainer}>
-				<ThemedText type="subtitle">Step 3: Get a fresh start</ThemedText>
-				<ThemedText>
-					When you're ready, run <ThemedText type="defaultSemiBold">npm run reset-project</ThemedText> to get a fresh{" "}
-					<ThemedText type="defaultSemiBold">app</ThemedText> directory. This will move the current{" "}
-					<ThemedText type="defaultSemiBold">app</ThemedText> to{" "}
-					<ThemedText type="defaultSemiBold">app-example</ThemedText>.
-				</ThemedText>
-			</ThemedView>
-			<TouchableOpacity
-				style={styles.logoutButton}
-				onPress={() => authContext.logout()}
+			<ParallaxScrollView
+				headerBackgroundColor={{ light: "#A1CEDC", dark: "#11242a" }}
+				headerImage={<></>}
 			>
-				<ThemedText style={styles.buttonText}>Log Out</ThemedText>
-			</TouchableOpacity>
-			<ThemedView style={styles.stepContainer}></ThemedView>
-		</ParallaxScrollView>
+				<ThemedView style={styles.titleContainer}>
+					<ThemedText type="title">Welcome, you are logged in!</ThemedText>
+					<HelloWave />
+				</ThemedView>
+				<ThemedView style={styles.stepContainer}>
+					<ThemedText type="subtitle">Step 1: Try it </ThemedText>
+					<TouchableOpacity
+						style={styles.workoutButton}
+						onPress={() => {
+							router.navigate("/workouts");
+						}}
+					>
+						<ThemedText style={styles.buttonText}>Workouts page</ThemedText>
+					</TouchableOpacity>
+					<ThemedText>
+						Edit <ThemedText type="defaultSemiBold">app/(tabs)/HomeScreen.tsx</ThemedText> to see changes. Press{" "}
+						<ThemedText type="defaultSemiBold">
+							{Platform.select({
+								ios: "cmd + d",
+								android: "cmd + m",
+								web: "F12",
+							})}
+						</ThemedText>{" "}
+						to open developer tools.
+					</ThemedText>
+				</ThemedView>
+				<ThemedView style={styles.stepContainer}>
+					<ThemedText type="subtitle">Step 2: Explore</ThemedText>
+					<ThemedText>{}</ThemedText>
+				</ThemedView>
+				<ThemedView style={styles.stepContainer}>
+					<ThemedText type="subtitle">Step 3: Get a fresh start</ThemedText>
+					<ThemedText>
+						When you're ready, run <ThemedText type="defaultSemiBold">npm run reset-project</ThemedText> to get a fresh{" "}
+						<ThemedText type="defaultSemiBold">app</ThemedText> directory. This will move the current{" "}
+						<ThemedText type="defaultSemiBold">app</ThemedText> to{" "}
+						<ThemedText type="defaultSemiBold">app-example</ThemedText>.
+					</ThemedText>
+				</ThemedView>
+				<TouchableOpacity
+					style={styles.logoutButton}
+					onPress={() => authContext.logout()}
+				>
+					<ThemedText style={styles.buttonText}>Log Out</ThemedText>
+				</TouchableOpacity>
+				<ThemedView style={styles.stepContainer}></ThemedView>
+			</ParallaxScrollView>
+		</SafeAreaView>
 	);
 }
 

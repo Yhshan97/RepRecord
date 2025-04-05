@@ -6,7 +6,7 @@
 	"scripts": {
 		"start": "expo start",
 		"reset-project": "node ./scripts/reset-project.js",
-		"dev": "cross-env NODE_ENV=development npx expo start --android",
+		"dev": "cross-env NODE_ENV=development npx expo start --android --tunnel",
 		"stage": "cross-env NODE_ENV=staging npx expo start --android",
 		"prod": "cross-env NODE_ENV=production npx expo start --android",
 		"android": "expo start --android",

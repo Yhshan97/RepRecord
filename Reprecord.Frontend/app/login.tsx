@@ -16,7 +16,7 @@ export default function LoginScreen() {
 
 	return (
 		<>
-			<Stack.Screen options={{ title: "Login" }} />
+			{/* <Stack.Screen options={{ title: "Login" }} /> */}
 			<ParallaxScrollView
 				headerBackgroundColor={{ light: "#A1CEDC", dark: "#1D3D47" }}
 				headerImage={<></>}
