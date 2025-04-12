@@ -44,10 +44,9 @@ class ApiClient {
 		};
 		try {
 			const res = await fetch(url, config);
-
 			if (res.status === 403 && !options.secondAttempt) {
 				await this.refreshAccessToken();
-				return this.request<T>(endpoint, {...options, secondAttempt: true});
+				return this.request<T>(endpoint, { ...options, secondAttempt: true });
 			}
 
 			if (res.status === 204) {

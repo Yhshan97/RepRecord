@@ -7,7 +7,7 @@ export type Set = {
 };
 
 export type Log = {
-	logID?: string;
+	logID: string;
 	exerciseID: string;
 	date: string;
 	sets: Array<Set>;

@@ -16,6 +16,8 @@ const MAPPING = {
 	trash: "delete",
 	plus: "add",
 	pencil: "edit",
+	multiply: "close",
+	checkmark: "check",
 } as Partial<
 	Record<import("expo-symbols").SymbolViewProps["name"], React.ComponentProps<typeof MaterialIcons>["name"]>
 >;

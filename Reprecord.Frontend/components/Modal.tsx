@@ -18,9 +18,18 @@ interface CustomModalProps extends ModalProps {
 type ModalButtonProps = {
 	onCancel: () => void;
 	onConfirm: () => void;
+	isDisabledProp?: boolean;
+	cancelText?: string;
+	confirmText?: string;
 };
 
-const ModalButtons = ({ onCancel, onConfirm }: ModalButtonProps) => {
+export const ModalButtons = ({
+	onCancel,
+	onConfirm,
+	isDisabledProp = false,
+	cancelText = "Cancel",
+	confirmText = "Confirm",
+}: ModalButtonProps) => {
 	const rippleStyle: PressableAndroidRippleConfig = {
 		color: "rgba(0,0,0,0.1)",
 		foreground: true,
@@ -43,24 +52,24 @@ const ModalButtons = ({ onCancel, onConfirm }: ModalButtonProps) => {
 	return (
 		<View style={styles.buttonContainer}>
 			<Pressable
-				style={[styles.button, styles.buttonCancel, isDisabled && styles.buttonDisabled]}
-				disabled={isDisabled}
+				style={[styles.button, styles.buttonCancel, (isDisabled || isDisabledProp) && styles.buttonDisabled]}
+				disabled={isDisabled || isDisabledProp}
 				android_ripple={rippleStyle}
 				onPress={handleCancelClick}
 				accessibilityLabel="Cancel button"
 				accessible={true}
 			>
-				<Text style={[styles.cancelText, styles.textStyle]}>Cancel</Text>
+				<Text style={[styles.cancelText, styles.textStyle]}>{cancelText}</Text>
 			</Pressable>
 			<Pressable
-				style={[styles.button, styles.buttonConfirm, isDisabled && styles.buttonDisabled]}
-				disabled={isDisabled}
+				style={[styles.button, styles.buttonConfirm, (isDisabled || isDisabledProp) && styles.buttonDisabled]}
+				disabled={isDisabled || isDisabledProp}
 				android_ripple={rippleStyle}
 				onPress={handleConfirmClick}
 				accessibilityLabel="Confirm button"
 				accessible={true}
 			>
-				<Text style={[styles.confirmText, styles.textStyle]}>Confirm</Text>
+				<Text style={[styles.confirmText, styles.textStyle]}>{confirmText}</Text>
 			</Pressable>
 		</View>
 	);
@@ -126,7 +135,7 @@ const styles = StyleSheet.create({
 		overflow: "hidden",
 	},
 	buttonDisabled: {
-		opacity: 0.3, // Reduced opacity for disabled buttons
+		opacity: 0.3,
 	},
 	buttonCancel: {
 		borderBottomLeftRadius: BORDER_RADIUS,

@@ -1,4 +1,4 @@
-import { StyleSheet, Platform, TouchableOpacity } from "react-native";
+import { StyleSheet, Platform, TouchableOpacity, SafeAreaView } from "react-native";
 import { HelloWave } from "@/components/HelloWave";
 import ParallaxScrollView from "@/components/ParallaxScrollView";
 import { ThemedText } from "@/components/ThemedText";
@@ -6,7 +6,6 @@ import { ThemedView } from "@/components/ThemedView";
 import { useContext } from "react";
 import { AuthContext } from "@/context/AuthContext";
 import { router } from "expo-router";
-import { SafeAreaView } from "react-native-safe-area-context";
 
 export default function HomeScreen() {
 	const authContext = useContext(AuthContext);
@@ -16,10 +15,7 @@ export default function HomeScreen() {
 	}
 
 	return (
-		<SafeAreaView
-			style={{ flex: 1 }}
-			edges={["top"]}
-		>
+		<SafeAreaView style={{ flex: 1 }}>
 			<ParallaxScrollView
 				headerBackgroundColor={{ light: "#A1CEDC", dark: "#11242a" }}
 				headerImage={<></>}
